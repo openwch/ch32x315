@@ -2,7 +2,7 @@
  * File Name          : main.c
  * Author             : WCH
  * Version            : V1.0.1
- * Date               : 2025/01/08
+ * Date               : 2026/08/27
  * Description        : Main program body.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -42,7 +42,7 @@ WRITE EERPOM:Start + 0xA0 + 8bit Data Address + Write Data + Stop.
 #define SIZE sizeof(TEXT_Buffer)
 
 /* Global Variable */
-const u8 TEXT_Buffer[]={"CH32V00X I2C TEST"};
+const u8 TEXT_Buffer[]={"CH32x3x5 I2C TEST"};
 
 /*********************************************************************
  * @fn      IIC_Init

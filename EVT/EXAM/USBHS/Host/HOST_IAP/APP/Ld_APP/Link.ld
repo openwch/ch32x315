@@ -7,12 +7,6 @@ PROVIDE( _stack_size = __stack_size );
 
 MEMORY
 {
-	/*
-	FLASH + RAM supports the following configuration
-	For specific choices, please refer :CH32V4x7RM.PDF\Table 32-3
-	FLASH-576K + RAM-136K
-	FLASH-512K + RAM-200K
-	*/
 	FLASH (rx) : ORIGIN = 0x00008000, LENGTH = 32K
 	RAM (xrw) : ORIGIN = 0x20000000, LENGTH = 64K
 }

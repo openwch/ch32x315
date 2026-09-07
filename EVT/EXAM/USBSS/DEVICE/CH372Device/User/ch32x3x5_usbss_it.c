@@ -2,7 +2,7 @@
 * File Name          : ch32X3x5_it.c
 * Author             : WCH
 * Version            : V1.0.1
-* Date               : 2025/10/23
+* Date               : 2026/08/18
 * Description        : USBSS functions Interrupt Service Routines.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -142,6 +142,7 @@ uint8_t USBSS_Get_Endp_Status( uint8_t dir_endp )
     }
     return 0x00;
 }
+
 /*********************************************************************
  * @fn      USBSS_IRQHandler
  *
@@ -266,7 +267,6 @@ void USBSS_IRQHandler( void )
 
                 /* Set usb address */
                 case USB_SET_ADDRESS:
-
                     USBSS_Dev_Info.set_devaddr = 1;
                     USBSS_Dev_Info.devaddr = (uint16_t)( USBSS_SetupReqValue & 0xFF );
                     break;
@@ -461,7 +461,7 @@ void USBSS_IRQHandler( void )
         if( errflag == 0xFF )
         {
             /* if one request not support, return stall */
-            USBSSD->UEP0_TX_CTRL = USBSS_EP0_TX_STALL;
+            USBSSD->UEP0_TX_CTRL = USBSS_EP0_TX_STALL | USBSS_EP0_RX_STALL;
             USBSSD->UEP0_RX_CTRL = USBSS_EP0_RX_ERDY | USBSS_EP0_RX_STALL;
         }
         else

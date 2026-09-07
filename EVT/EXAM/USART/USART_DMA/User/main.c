@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/18
+* Version            : V1.0.1
+* Date               : 2026/08/17
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -14,12 +14,13 @@
  *@Note
  USART DMA, master/slave mode transceiver routine:
  Master:USART2_Tx(PA4)\USART2_Rx(PA5).
- Slave:USART3_Tx(PA13)\USART3_Rx(PA14).
+ Slave:USART3_Tx(PC8)\USART3_Rx(PC9).
 
- This example demonstrates UART2 and USART3 use DAM data to send and receive.
+ This example demonstrates UART2 and USART3 use DMA to send and receive.
 
-    Hardware connection:PA4 -- PA14
-               PA5 -- PA13
+    Hardware connection:
+     PA4 -- PC9
+     PA5 -- PC8
 
 */
 
@@ -89,28 +90,35 @@ void USARTx_CFG(void)
     USART_InitTypeDef USART_InitStructure = {0};
 
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART2 | RCC_HB1Periph_USART3, ENABLE);
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOC, ENABLE);
 
-    /* USART2 TX-->A.4   RX-->A.5 */
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource4,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    // USART2_RX PA5(AF1)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // USART2_TX PA4(AF1)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource4, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_4;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource5,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-    /* USART3 TX-->A.13  RX-->A.14 */
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource13,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+
+    // USART3_RX PC9(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource9, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    // USART3_TX PC8(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource8, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource14,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
     USART_InitStructure.USART_BaudRate = 115200;
     USART_InitStructure.USART_WordLength = USART_WordLength_8b;

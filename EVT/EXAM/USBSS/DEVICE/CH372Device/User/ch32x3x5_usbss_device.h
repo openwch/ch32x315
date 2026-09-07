@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32X3x5_usbss_device.h"
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/05/23
+* Version            : V1.0.1
+* Date               : 2026/08/18
 * Description        : header file of ch32X3x5_usbss_device.c
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -17,6 +17,15 @@ extern "C" {
 #endif
 
 #include "ch32x3x5.h"    
+
+/******************************************************************************/
+/* USBSSIF TEST */
+#define DEF_FUN_IF_TEST_EN            0x00
+
+#if ( DEF_FUN_IF_TEST_EN == 0x01 )    
+#define DEF_UP_U1_EN                  0x01
+#define DEF_UP_U2_EN                  0x01
+#endif
 
 /******************************************************************************/
 /* Endpoint Number */

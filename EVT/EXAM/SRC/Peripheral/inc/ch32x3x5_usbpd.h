@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_usbpd.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/06
+* Version            : V1.0.1
+* Date               : 2026/08/03
 * Description        : This file contains all the functions prototypes for the USBPD
 *                      firmware library.
 *********************************************************************************
@@ -121,7 +121,7 @@ typedef volatile unsigned long  *PUINT32V;
 #define WAKE_POLAR          (1<<5)             /* PD port wake-up level */
 #define PRE_KEEP            (1<<7)             /* PD port wake-up level */
 #define RX_MULTI_0          (1<<8)             /* PD port wake-up level */
-#define RTX_5BIT            (1<<9)             /* PD port wake-up level */
+#define RTX_BIT0            (1<<9)             /* PD port wake-up level */
 #define IE_PD_IO            (1<<10)            /* PD IO interrupt enable */
 #define IE_RX_BIT           (1<<11)            /* Receive bit interrupt enable */
 #define IE_RX_BYTE          (1<<12)            /* Receive byte interrupt enable */

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/18
+* Version            : V1.0.1
+* Date               : 2026/08/27
 * Description        : Main program body
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -138,12 +138,14 @@ WS2812_RGBData_u hsv2rgb(WS2812_HSVData_t hsv)
 
 void ARGB_GPIO_Init()
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
 
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_AFIO, ENABLE);
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_15;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
+
+    GPIO_PinAFConfig(GPIOA,GPIO_PinSource15,GPIO_AF5);
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
@@ -161,7 +163,7 @@ void ARGB_WS2812B_DMA_Init(uint8_t *ARGB_DMA_Buffer, size_t buffer_size)
 {
     RCC_HBPeriphClockCmd(RCC_HBPeriph_DMA1, ENABLE);
 
-    DMA_InitTypeDef DMA_InitStructure;
+    DMA_InitTypeDef DMA_InitStructure = {0};
 
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&(ARGB->DATAR);
     DMA_InitStructure.DMA_Memory0BaseAddr     = (uint32_t)ARGB_DMA_Buffer;
@@ -175,8 +177,8 @@ void ARGB_WS2812B_DMA_Init(uint8_t *ARGB_DMA_Buffer, size_t buffer_size)
     DMA_InitStructure.DMA_Priority           = DMA_Priority_High;
     DMA_InitStructure.DMA_M2M                = DMA_M2M_Disable;
     DMA_InitStructure.DMA_BufferMode         = DMA_SingleBufferMode;
-    DMA_Init(DMA1_Channel10, &DMA_InitStructure);
-    DMA_Cmd(DMA1_Channel10, ENABLE);
+    DMA_Init(DMA1_Channel11, &DMA_InitStructure);
+    DMA_Cmd(DMA1_Channel11, ENABLE);
 }
 
 /*********************************************************************
@@ -195,14 +197,14 @@ void ARGB_WS2812B_Init(uint8_t *ARGB_DMA_Buffer, size_t buffer_size)
     RCC_HBPeriphClockCmd(RCC_HBPeriph_ARGB, ENABLE);
 
     // Initialize ARGB configuration structure
-    ARGB_InitTypeDef ARGB_InitStruct;
+    ARGB_InitTypeDef ARGB_InitStruct = {0};
 
     // Configure ARGB parameters
     ARGB_InitStruct.ARGB_Length     = buffer_size - 1;         // Set buffer length (minus 1 for zero-based indexing)
-    ARGB_InitStruct.ARGB_T1H        = ARGB_US2HBTICK(0.9f);    // Set high time for '1' bit (0.9��s)
-    ARGB_InitStruct.ARGB_T0H        = ARGB_US2HBTICK(0.3f);    // Set high time for '0' bit (0.3��s)
-    ARGB_InitStruct.ARGB_DataPeriod = ARGB_US2HBTICK(1.45f);   // Set data bit period (1.45��s)
-    ARGB_InitStruct.ARGB_RSTPeriod  = ARGB_US2HBTICK(80.0f);   // Set reset period (80��s)
+    ARGB_InitStruct.ARGB_T1H        = ARGB_US2HBTICK(0.9f);    // Set high time for '1' bit (0.9us)
+    ARGB_InitStruct.ARGB_T0H        = ARGB_US2HBTICK(0.3f);    // Set high time for '0' bit (0.3us)
+    ARGB_InitStruct.ARGB_DataPeriod = ARGB_US2HBTICK(1.45f);   // Set data bit period (1.45us)
+    ARGB_InitStruct.ARGB_RSTPeriod  = ARGB_US2HBTICK(80.0f);   // Set reset period (80us)
     ARGB_InitStruct.ARGB_Mode       = ARGB_Mode_SendRSTFirst;  // Set mode to send reset first
     ARGB_InitStruct.ARGB_Endian     = ARGB_Endian_MSB;         // Set most significant bit first
     ARGB_Init(&ARGB_InitStruct);                          // Apply ARGB configuration
@@ -229,17 +231,17 @@ int main(void)
     USART_Printf_Init(115200);
     printf("SystemClk:%d\r\n", SystemCoreClock);
     printf("ChipID:%08x\r\n", DBGMCU_GetCHIPID());
+    printf("%#x\n", ARGB_US2HBTICK(0.3f));
 
-    printf("WS2812 Test\r\n");
     ARGB_GPIO_Init();
     // Initialize WS2812B LED strip with data buffer size
     ARGB_WS2812B_Init((void *)WS2812_Data, sizeof(WS2812_Data));
-
     // Enable DMA and ARGB controller
     ARGB_DMACmd(ENABLE);
     ARGB_Cmd(ENABLE);
-    
+
     while (1) {
+
     }
 }
 
@@ -268,8 +270,8 @@ void __attribute__((interrupt("WCH-Interrupt-fast"))) ARGB_IRQHandler(void)
         }
 
         // Refresh DMA transfer with new data
-        DMA_Cmd(DMA1_Channel10, DISABLE);                             // Disable DMA
-        DMA_SetCurrDataCounter(DMA1_Channel10, sizeof(WS2812_Data));  // Set data size
-        DMA_Cmd(DMA1_Channel10, ENABLE);                              // Enable DMA
+        DMA_Cmd(DMA1_Channel11, DISABLE);                             // Disable DMA
+        DMA_SetCurrDataCounter(DMA1_Channel11, sizeof(WS2812_Data));  // Set data size
+        DMA_Cmd(DMA1_Channel11, ENABLE);                              // Enable DMA
     }
 }

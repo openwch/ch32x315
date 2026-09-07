@@ -1,5 +1,5 @@
 
-南京沁恒微电子股份有限公司 2026.05
+南京沁恒微电子股份有限公司 2026.08
 最新资料请到我们的网站上查询
 https://wch.cn
 
@@ -39,6 +39,7 @@ https://wch.cn
   |      |      |      |      |-- SoftUART：I/O口模拟串口例程 
   |      |      |      |-- ARGB
   |      |      |      |      |-- Gradient：ARGB例程
+  |      |      |      |      |-- PollingFilling: 轮询和中断方式驱动ARGB
   |      |      |      |-- BKP
   |      |      |      |      |-- BKP：BKP例程 
   |      |      |      |-- CPU
@@ -137,6 +138,9 @@ https://wch.cn
   |      |      |      |      |-- USBSS
   |      |      |      |      |      |-- DEVICE
   |      |      |      |      |      |      |-- CH372Device：模拟自定义USB设备（CH372设备），端点1下传数据通过端点2上传，端点2下传数据通过端点1上传，端点3独立下传数据和独立上传数据。
+  |      |      |      |-- USBPD
+  |      |      |      |      |-- USBPD_SNK：PD SNK 例程
+  |      |      |      |      |-- USBPD_SRC：PD SRC 例程
   |      |      |      |-- WWDG：窗口看门狗例程
   |      |      |      |      |-- WWDG：窗口看门狗例程  
 

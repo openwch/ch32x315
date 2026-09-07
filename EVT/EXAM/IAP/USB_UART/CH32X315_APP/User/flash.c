@@ -2,8 +2,8 @@
 * File Name          : iap.c
 * Author             : WCH
 * Version            : V1.0.0
-* Date               : 2025/12/01
-* Description        : CH32V407  fast program
+* Date               : 2026/08/27
+* Description        : CH32X315  fast program
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * Attention: This software (modified or not) and binary are used for 
@@ -24,7 +24,7 @@ u32 Verify_buf[32];
  */
 void CH32_IAP_Program(u32 adr, u32* buf) {
 
-    FLASH_ProgramPage_Fast(adr, buf);
+    FLASH_ROM_WRITE(adr, buf ,256);
 }
 
 

@@ -62,7 +62,6 @@
 				"post_script": "",
 				"post_script_description": "",
 				"excludeResources": [
-					"${project}/Startup/startup_ch32x3x5_D8.S",
 					"${project}/Peripheral/src/ch32x3x5_dma.c",
 					"${project}/Peripheral/src/ch32x3x5_pwr.c"
 				],

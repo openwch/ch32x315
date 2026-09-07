@@ -6,16 +6,18 @@
 		"chipInfo": {
 			"vendor": "WCH",
 			"toolchain": "RISC-V",
-			"series": "CH32V4X7",
+			"series": "CH32X315",
 			"rtos": "NoneOS",
-			"mcu": "CH32V407RET",
-			"description": "Website: https://www.wch.cn/products/CH32V407.html?\\nROM(byte): 512K, SRAM(byte): 200K, CHIP PINS: 64, GPIO PORTS: 49.\\nThe CH32V407 is an industrial-grade interconnect microcontroller based on the barley RISC-V core. It supports a 200 MHz main frequency with zero wait state operation and the V vector instruction set, and is used for accelerating computations or parallel processing applications. The CH32V407 is equipped with 2 sets of USB 2.0 high-speed PHY transceivers (480 Mbps), an Ethernet MAC controller, and 10/100 Mbps physical layer transceivers; it also includes two ADC units, two DAC units, and OPA amplifiers as analog resources; it provides 2 sets of a total of 24 DMA controllers, SDIO, DVP digital image interface, RNG, ARGB, LTDC, FSMC, multiple timers, 10 USART serial ports, I2C interface, I3C interface, 3 SPI interfaces, 2 I2S interfaces, and CAN interfaces, offering a rich set of peripheral resources.The CH32V467, based on the CH32V407, adds 4M or 8M bytes of on-chip expanded PSRAM memory and supports DMA.",
-			"tempratureScope": "CH32V407RET6{-40℃~85℃}",
+			"mcu": "CH32X305RCT",
+			"description": "Website: https://www.wch.cn/products/CH32X315.html?\\nROM(byte): 480K, SRAM(byte): 64K, CHIP PINS: 64, GPIO PORTS: 55.\\nWCH CH32X315 is a multi-channel ADC microcontroller designed based on the Qingke RISC-V core, which supports zero-wait operation at 480MHz.CH32X315 incorporates four high-speed 12-bit ADC conversion units, providing 48 direct input channels and supporting scanning mode. It can be paired with an analog switch chip to expand the number of channels by 8 times and automatically switch between them.",
+			"tempratureScope": "CH32X315RCT6{-40℃~85℃}",
 			"artifactType": "executable",
 			"link": "WCH-Link",
 			"peripheral_version": "1.0",
 			"calibrateSupport": false,
-			"calibrateCommand": ""
+			"calibrateCommand": "",
+			"UIConfigSupport": false,
+			"externalFlashSupport": false
 		},
 		"linkedFolders": [
 			{
@@ -286,10 +288,11 @@
 				},
 				"createFlash": {
 					"enabled": true,
-					"outputFileFormat": "ihexAndbinary",
+					"outputFileFormat": "binary",
 					"copy_only_section_text": false,
 					"copy_only_section_data": false,
 					"copy_only_sections": [],
+					"create_algorithm_file": false,
 					"other_flags": ""
 				},
 				"createList": {
@@ -339,7 +342,7 @@
 		]
 	},
 	"flashConfig": {
-		"mcutype": "CH32V407",
+		"mcutype": "CH32X315",
 		"address": "0x08000000",
 		"target_path": "obj\\APP.hex",
 		"clkSpeed": "High",
@@ -352,6 +355,8 @@
 		"disablepowerout": false,
 		"clearcodeflash": false,
 		"disablecodeprotect": false,
+		"flashType": "",
+		"asmFile_path": "",
 		"exepath": "",
 		"exearguments": ""
 	},
@@ -365,7 +370,7 @@
 			"configOptions": [
 				"-f \"${WCH:OpenOCD:default}/bin/wch-riscv.cfg\""
 			],
-			"host": "localhost",
+			"host": "127.0.0.1",
 			"port": 3333,
 			"skipDownloadBeforeDebug": false,
 			"enablePageEraser": false,
@@ -413,7 +418,7 @@
 			},
 			"debugInRAM": false
 		},
-		"svdpath": "${WCH:SDK:default}/RISC-V/CH32V4X7/NoneOS/CH32V4X7.svd",
+		"svdpath": "${WCH:SDK:default}/RISC-V/CH32X315/NoneOS/CH32X315xx.svd",
 		"output": {
 			"showDebugGDBTrace": true,
 			"saveDebugOutputToFile": false,
@@ -427,8 +432,10 @@
 			"ATTR_BUILD_BEFORE_LAUNCH_ATTR": 2,
 			"GdbServerAllocateConsole": true,
 			"GdbServerAllocateTelnetConsole": false,
+			"SkipDownloadBeforeDebug": false,
 			"StartGdbCLient": true,
-			"UPDATE_THREADLIST_ON_SUSPEND": false
+			"UPDATE_THREADLIST_ON_SUSPEND": false,
+			"DebugInRam": false
 		}
 	}
 }

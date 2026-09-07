@@ -1,5 +1,5 @@
 
-Nanjing Qinheng Microelectronics Co., Ltd. 2026.05
+Nanjing Qinheng Microelectronics Co., Ltd. 2026.08
 
 https://wch-ic.com
 
@@ -39,6 +39,7 @@ Directory
   |      |      |      |      |-- SoftUART: I/O port simulation serial port routine
   |      |      |      |-- ARGB
   |      |      |      |      |-- Gradient: ARGB routine
+  |      |      |      |      |-- PollingFilling: Poll and interrupt mode drive ARGB
   |      |      |      |-- CPU
   |      |      |      |      |-- CoreMark: CoreMark routine
   |      |      |      |      |-- OS:

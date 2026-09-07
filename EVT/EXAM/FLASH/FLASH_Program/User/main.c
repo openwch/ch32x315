@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/18
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -15,6 +15,8 @@
  * FLASH erase/read/write, and fast programming:
  * Includes Standard Erase and Program, Fast Erase and Program.
  * Note ：It is recommended to enable continuous read when programming/erasing/read FLASH (FLASH->ACTLR bit11).
+ *        It is recommended to use the erase function - FLASH_ROM_ERASE.
+ *        It is recommended to use the program function - FLASH_ROM_WRITE. 
 */
 
 #include "debug.h"
@@ -63,7 +65,7 @@ void Flash_Test(void)
 
     NbrOfPage = (PAGE_WRITE_END_ADDR - PAGE_WRITE_START_ADDR) / FLASH_PAGE_SIZE;
 
-    FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_WRPRTERR);
+    FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_WRPRTERR);
 
     for(EraseCounter = 0; (EraseCounter < NbrOfPage) && (FLASHStatus == FLASH_COMPLETE); EraseCounter++)
     {
@@ -172,24 +174,6 @@ void Flash_Test_Fast(void)
         printf("%d Byte Verify Fail\r\n", (Fsize*4));
     else
         printf("%d Byte Verify Suc\r\n", (Fsize*4));
-}
-#define addr  (0x08019000)
-uint32_t pbuf[64] = {0};
-void FLASH_RW(void)
-{
-    FLASH_Unlock_Fast();
-    FLASH_ErasePage(0x08019000);
-    for(int i = 0;i<64;i++)
-    {
-        pbuf[i] = i;
-    }
-    FLASH_ProgramPage_Fast(addr,pbuf);
-    FLASH_ProgramPage_Fast(addr+256,pbuf);
-    FLASH_ProgramPage_Fast(addr+256*2,pbuf);
-    for(int j = 0;j<64*3;j++)
-    {
-        printf("%08x - %08x \r\n",(vu32)(addr+4*j),*(vu32*)(addr+4*j));
-    }
 }
 
 /*********************************************************************

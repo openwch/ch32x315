@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : system_ch32x3x5.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/18
 * Description        : CH32X3x5 Device Peripheral Access Layer System Header File.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -853,7 +853,7 @@
 #define LINK_TX_LGO_U1              0x00002000
 #define LINK_POLLING_EN             0x00001000
 #define LINK_REG_ROUT_EN            0x00000800
-#define LINK_LUP_LDN_EN             0x00000400
+#define LINK_U3_WKUP_EN             0x00000400
 #define LINK_TX_UX_EXIT             0x00000200
 #define LINK_TX_WARM_RESET          0x00000100
 #define LINK_GO_RX_DET              0x00000080

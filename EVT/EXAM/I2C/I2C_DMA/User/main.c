@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/01/01
+ * Version            : V1.0.1
+ * Date               : 2026/08/17
  * Description        : Main program body.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -31,7 +31,7 @@
 
 /* I2C Communication Mode Selection */
 #define I2C_MODE   HOST_MODE
-//#define I2C_MODE   SLAVE_MODE
+// #define I2C_MODE   SLAVE_MODE
 
 /* Global define */
 #define Size   6
@@ -162,7 +162,7 @@ void DMA_Rx_Init(DMA_Channel_TypeDef *DMA_CHx, u32 ppadr, u32 memadr, u16 bufsiz
  */
 int main(void)
 {
-	uint8_t j ;
+	uint8_t j ,i,t;
     SystemCoreClockUpdate();
     Delay_Init();
 

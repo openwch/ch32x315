@@ -286,7 +286,7 @@
             </toolChain>
           </folderInfo>
           <sourceEntries>
-            <entry excluding="Startup/startup_ch32x3x5_D8.S|LiteOS/kal|LiteOS/testsuits|LiteOS/third_party/cmsis|LiteOS/components/cppsupport|LiteOS/components/net|LiteOS/components/fs|LiteOS/components/exchook" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+            <entry excluding="LiteOS/kal|LiteOS/testsuits|LiteOS/third_party/cmsis|LiteOS/components/cppsupport|LiteOS/components/net|LiteOS/components/fs|LiteOS/components/exchook" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
           </sourceEntries>
         </configuration>
       </storageModule>

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2026/01/19
+ * Version            : V1.0.1
+ * Date               : 2026/08/27
  * Description        : 
  *********************************************************************************
  * Copyright (c) 2026 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -45,7 +45,6 @@ int main(void)
     printf( "TIM3 Init OK!\r\n" );
 
     /* Initialize USBHS host */
-    /* Note: Only CH32V305/CH32V307 support USB high-speed port. */
 #if DEF_USBHS_PORT_EN
     printf( "USBHS Host Init\r\n" );
     USBHS_Host_Init( ENABLE );

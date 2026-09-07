@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/18
 * Description        : CH32X3x5 Device Peripheral Access Layer Header File.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -24,13 +24,13 @@
 #endif
 
 /* In the following line adjust the External High Speed oscillator (HSE) Startup Timeout value */
-#define HSE_STARTUP_TIMEOUT   ((uint16_t)0x1000000) /* Time out for HSE start up */
+#define HSE_STARTUP_TIMEOUT   ((uint32_t)0x1000000) /* Time out for HSE start up */
 
 #define HSI_VALUE    ((uint32_t)20000000) /* Value of the Internal oscillator in Hz */
 
 /* CH32X3x5 Standard Peripheral Library version number */
 #define __CH32X3x5_STDPERIPH_VERSION_MAIN   (0x01) /* [15:8] main version */
-#define __CH32X3x5_STDPERIPH_VERSION_SUB    (0x00) /* [7:0] sub version */
+#define __CH32X3x5_STDPERIPH_VERSION_SUB    (0x01) /* [7:0] sub version */
 #define __CH32X3x5_STDPERIPH_VERSION        ( (__CH32X3x5_STDPERIPH_VERSION_MAIN << 8)\
                                              |(__CH32X3x5_STDPERIPH_VERSION_SUB << 0))
 
@@ -561,7 +561,9 @@ typedef struct
     __IO uint8_t LINK_U3_WKUP_FILTER;
     uint8_t Reserved5[1];  
     __IO uint16_t LINK_U3_WKUP_TMR;     
-    uint8_t Reserved6[12];          
+    __IO uint32_t LINK_U1_EXIT_CFG;   
+    __IO uint32_t LINK_U2_EXIT_CFG;   
+    __IO uint32_t LINK_U3_EXIT_CFG;       
     __IO uint16_t LINK_ISO_DLY;      
     uint8_t Reserved7[14];          
     __IO uint16_t LINK_LPM_CR;       
@@ -594,12 +596,6 @@ typedef struct
     __IO USBSS_EP_RX_TypeDef EP3_RX;
     __IO USBSS_EP_TX_TypeDef EP4_TX;
     __IO USBSS_EP_RX_TypeDef EP4_RX;
-    __IO USBSS_EP_TX_TypeDef EP5_TX;
-    __IO USBSS_EP_RX_TypeDef EP5_RX;
-    __IO USBSS_EP_TX_TypeDef EP6_TX;
-    __IO USBSS_EP_RX_TypeDef EP6_RX;
-    __IO USBSS_EP_TX_TypeDef EP7_TX;
-    __IO USBSS_EP_RX_TypeDef EP7_RX;
 }USBSSD_TypeDef;
 
 /* USBHS Deveice Registers */
@@ -817,7 +813,7 @@ typedef struct
 #define RCC_BASE              (HBPERIPH_BASE + 0x21000)
 #define FLASH_R_BASE          (HBPERIPH_BASE + 0x22000)
 #define CRC_BASE              (HBPERIPH_BASE + 0x23000)
-#define ARGB_BASE             (HBPERIPH_BASE + 0x23400)
+#define ARGB_BASE             (HBPERIPH_BASE + 0x25000)
 #define USBPD_BASE            (HBPERIPH_BASE + 0x24400)
 
 #define USBHS_BASE            (HBPERIPH_BASE + 0x30000)
@@ -830,9 +826,6 @@ typedef struct
 #define OB_BASE               ((uint32_t)0x1FFFF800)
 
 #define EXTEN_BASE            ((uint32_t)0x400220C0)
-
-#define Reg_BASE              ((uint32_t)0x4002202C)
-#define Cfg_BASE              ((uint32_t)0x1FFFE008)
 
 /* Peripheral declaration */
 #define TIM2                  ((TIM_TypeDef *) TIM2_BASE)
