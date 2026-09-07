@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_gpio.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/07/23
 * Description        : This file provides all the GPIO firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -539,38 +539,6 @@ void GPIO_USBPDRISE(uint32_t GPIO_USBPDRISE)
 }
 
 /*********************************************************************
- * @fn      VCfg_Init
- *
- * @brief   VCfg_Init.
- *
- * @param   none
- *
- * @return  chipID
- */
-uint32_t VCfg_Init(void)
-{
-    vu32 TempReg;
-    uint32_t chip = 0;
-
-    chip = (*(vu32*)(Cfg_BASE-4));
-
-    if((chip & 0xFFF00000) == 0x31500000)
-    {
-        for(u8 i = 0; i < 11; i++)
-        {
-            TempReg = *(vu32*)(Cfg_BASE+4*i);
-            *(vu32*)(Reg_BASE+4*i) = TempReg;
-        }
-    }
-    else
-    {
-        chip = *(vu32*)0x1FFFF704;
-    }
-
-    return chip;
-} 
-
-/*********************************************************************
  * @fn      GPIO_IPD_Unused
  *
  * @brief   Configure unused GPIO as input pull-down.
@@ -586,7 +554,7 @@ void GPIO_IPD_Unused(void)
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_GPIOB | RCC_HB2Periph_GPIOC|\
                            RCC_HB2Periph_GPIOD , ENABLE);
                      
-    chip = VCfg_Init() & (~0x000000F0);
+    chip =  *( uint32_t * )0x1FFFF704 & (~0x000000F0);
 
     switch(chip)
     {

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_dbgmcu.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/07/23
 * Description        : This file provides all the DBGMCU firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -117,12 +117,6 @@ void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState)
  */
 uint32_t DBGMCU_GetCHIPID( void )
 {
-    uint32_t chip = *( uint32_t * )(Cfg_BASE-4);
-    if((chip & 0xFFF00000) != 0x31500000)
-    {
-        chip = *( uint32_t * )(0x1FFFF704);
-    }
-
-    return chip;
+    return( *( uint32_t * )0x1FFFF704 );
 }
 

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_i2c.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/27
 * Description        : This file contains all the functions prototypes for the 
 *                      I2C firmware library.
 *********************************************************************************
@@ -329,7 +329,7 @@ void     I2C_FastModeDutyCycleConfig(I2C_TypeDef *I2Cx, uint16_t I2C_DutyCycle);
  *    - When to use:
  *      - This function is suitable for most applications as well as for startup 
  *      activity since the events are fully described in the product reference manual 
- *      (CH32V03RM).
+ *      (CH32X315RM).
  *      - It is also suitable for users who need to define their own events.
  *    - Limitations:
  *      - If an error occurs besides to the monitored error,
@@ -358,7 +358,7 @@ void     I2C_FastModeDutyCycleConfig(I2C_TypeDef *I2Cx, uint16_t I2C_DutyCycle);
  *       - This function is suitable for the same applications above but it 
  *         don't have the limitations of I2C_GetFlagStatus() function .
  *         The returned value could be compared to events already defined in the 
- *         library (CH32V00X_i2c.h) or to custom values defined by user.
+ *         library (CH32x3x5_i2c.h) or to custom values defined by user.
  *       - This function can be used to monitor the status of multiple flags simultaneously.
  *       - Contrary to the I2C_CheckEvent () function, this function can choose the time to
  *         accept the event according to the user's needs (when all event flags are set and  

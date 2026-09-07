@@ -62,7 +62,7 @@
 				"post_script": "",
 				"post_script_description": "",
 				"excludeResources": [
-					"${project}/Startup/startup_ch32x3x5_D8.S"
+					""
 				],
 				"optimization": {
 					"level": "size",

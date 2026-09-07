@@ -10,7 +10,8 @@
 
 #include <rthw.h>
 #include <rtthread.h>
-#include "ch32x3x5.h"
+
+#include"ch32x3x5.h"
 #include "cpuport.h"
 
 #ifndef RT_USING_SMP
@@ -125,7 +126,7 @@ rt_uint8_t *rt_hw_stack_init(void       *tentry,
     frame->a0      = (rt_ubase_t)parameter;
     frame->epc     = (rt_ubase_t)tentry;
 
-    /* force to machine mode(MPP=11) and set MPIE to 1 and FS=11 */
+    /* force to machine mode(MPP=11) and set MPIE to 1 */
     frame->mstatus = 0x00001880;
     return stk;
 }

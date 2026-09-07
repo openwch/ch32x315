@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_rcc.h
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/21
 * Description        : This file contains all the functions prototypes for the 
 *                      RCC firmware library.
 *********************************************************************************
@@ -79,7 +79,7 @@ typedef struct
 
 /* RCC_CoreCLK_Div */
 #define RCC_CoreCLK_Div1                  ((uint32_t)0x00000000)
-#define RCC_CoreCLK_Div2                  ((uint32_t)0x00000800)
+#define RCC_CoreCLK_Div2                  ((uint32_t)0x00000100)
 
 
 /* RCC_Interrupt_source */

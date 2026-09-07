@@ -58,7 +58,6 @@
 				"post_script": "",
 				"post_script_description": "",
 				"excludeResources": [
-					"${project}/Startup/startup_ch32x3x5_D8.S",
 					"${project}/FreeRTOS/portable/Common/mpu_wrappers.c"
 				],
 				"optimization": {

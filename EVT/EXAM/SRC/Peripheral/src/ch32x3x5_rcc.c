@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : ch32x3x5_rcc.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/21
 * Description        : This file provides all the RCC firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -383,7 +383,7 @@ void RCC_ADCCLKConfig(uint32_t RCC_ADCPR, uint32_t RCC_PPR2)
     uint32_t tmpreg = 0;
 
     tmpreg = RCC->CFGR0;
-    tmpreg &= CFGR0_ADCPRE_Reset_Mask|CFGR0_PPRE2_Reset_Mask;   
+    tmpreg &= ~(0x1F << 11);   
     tmpreg |= RCC_ADCPR | RCC_PPR2;
     RCC->CFGR0 = tmpreg;
 }
@@ -459,7 +459,7 @@ void RCC_GetClocksFreq(RCC_ClocksTypeDef *RCC_Clocks)
                             RCC_Clocks->SYSCLK_Frequency = 125000000;
                             break;
                         case RCC_PLLHS_SRC_USBSSPLL_357M:    
-                            RCC_Clocks->SYSCLK_Frequency = 375000000;
+                            RCC_Clocks->SYSCLK_Frequency = 357000000;
                             break;
                         case RCC_PLLHS_SRC_USBSSPLL_625M:    
                             RCC_Clocks->SYSCLK_Frequency = 625000000;
@@ -510,8 +510,8 @@ void RCC_GetClocksFreq(RCC_ClocksTypeDef *RCC_Clocks)
         tmp2 = RCC_Clocks->HCLK_Frequency;
     }
 
-    tmp = (RCC->CFGR0 &  CFGR0_PPRE2_Set_Mask) >> 11;
-    tmp1 = RCC->CFGR0 &  CFGR0_ADCPRE_Set_Mask >> 14;
+    tmp = (RCC->CFGR0 & CFGR0_PPRE2_Set_Mask) >> 11;
+    tmp1 = (RCC->CFGR0 & CFGR0_ADCPRE_Set_Mask) >> 14;
     RCC_Clocks->ADCCLK_Frequency = tmp2 /ADCPrescTable[tmp1]/PPrescTable[tmp];    
 }
 

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/1/06
+* Version            : V1.0.1
+* Date               : 2026/08/17
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -14,12 +14,12 @@
  *@Note
  *single wire half duplex mode, master/slave mode transceiver routine:
  *Master:USART2_Tx(PA4)
- *Slave:USART3_Tx(PA13)
+ *Slave:USART3_Tx(PC8)
  *
  *This example demonstrates UART2 and USART3 single-wire half-duplex
  *mode data transmission and reception.
  *
- *   Hardware connection:PA4 -- PA13
+ *   Hardware connection:PA4 -- PC8
  * Note: The pin should be GPIO_Mode_AF_OD in single-wire half-duplex mode.
  *       The pin needs to connected a pull_up resistor 
  */
@@ -88,19 +88,23 @@ void USARTx_CFG(void)
     USART_InitTypeDef USART_InitStructure = {0};
 
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART2 | RCC_HB1Periph_USART3, ENABLE);
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOC, ENABLE);
 
-    /* USART2 TX-->A.2 */
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource4,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    // USART2_TX PA4(AF1)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource4, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_4;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    /* USART3 TX-->B.10 */
-    GPIO_PinAFConfig(GPIOA,GPIO_PinSource13,GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // USART3_TX PC8(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource8, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
     USART_InitStructure.USART_BaudRate = 115200;
     USART_InitStructure.USART_WordLength = USART_WordLength_8b;

@@ -27,15 +27,21 @@
 
 #define CH32X3xx_CHIP     CH32X315WCU6_CHIP
 /* board configuration */
-#define SRAM_SIZE  64
-#define SRAM_END (0x20000000+ SRAM_SIZE * 1024)
+#if 0// define(USING_MAX_HEAP_SIZE)
+#define SRAM_SIZE  20
+#define SRAM_END (0x20000000 + SRAM_SIZE * 1024)
 
-extern int _ebss;
+
+
+extern int _ebss,__stack_size;
 #define HEAP_BEGIN  ((void *)&_ebss)
 #define HEAP_END    (SRAM_END-__stack_size)
+#else
+extern int _ebss,_heap_end;
+#define HEAP_BEGIN  ((void *)&_ebss)
+#define HEAP_END    ((void *)&_heap_end)
 
-
-
+#endif //USING_MAX_HEAP_SIZE
 void rt_hw_board_init(void);
 
 #endif /* __BOARD_H__ */

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/18
+* Version            : V1.0.1
+* Date               : 2026/08/17
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -13,14 +13,14 @@
 /*
  *@Note
 synchronous mode, master/slave mode, transceiver routine:
- Master:USART2_CK(PA3)\USART2_Tx(PA4)\USART4_Rx(PA5).
- Slave:SPI1_SCK(PA13)\SPI1_MISO(PA7)\SPI1_MOSI(PA6).
- This example demonstrates using USART2 as the master and SPI1 as the slave,
+ Master:USART3_CK(PC10)\USART3_Tx(PC8)\USART3_Rx(PC9).
+ Slave:SPI1_SCK(PA5)\SPI1_MISO(PA7)\SPI1_MOSI(PA6).
+ This example demonstrates using USART3 as the master and SPI1 as the slave,
  sending and receiving data in full duplex.
 Hardware connection:
-           PA3 -- PA5
-           PA4  -- PA7
-           PA13 -- PA6
+           PC10 -- PA5
+           PC9  -- PA7
+           PC8 -- PA6
 
 */
 
@@ -39,9 +39,9 @@ typedef enum
 #define size(a)    (sizeof(a) / sizeof(*(a)))
 
 /* Global Variable */
-u8 TxBuffer1[] = "*Buffer1 Send from USART2 to SPI1 using SynchromousMode!"; /* Send by UART1 */
-u8 TxBuffer2[] = "#Buffer2 Send from SPI1 to USART2 using SynchromousMode!"; /* Send by SPI1  */
-u8 RxBuffer1[TxSize1] = {0};                                                 /* USART2 Using  */
+u8 TxBuffer1[] = "*Buffer1 Send from USART3 to SPI1 using SynchromousMode!"; /* Send by UART1 */
+u8 TxBuffer2[] = "#Buffer2 Send from SPI1 to USART3 using SynchromousMode!"; /* Send by SPI1  */
+u8 RxBuffer1[TxSize1] = {0};                                                 /* USART3 Using  */
 u8 RxBuffer2[TxSize2] = {0};                                                 /* SPI1   Using  */
 
 u8 TxCnt1 = 0, RxCnt1 = 0;
@@ -77,42 +77,48 @@ TestStatus Buffercmp(uint8_t *Buf1, uint8_t *Buf2, uint16_t BufLength)
 }
 
 /*********************************************************************
- * @fn      USART2_ReCFG
+ * @fn      USART3_ReCFG
  *
- * @brief   ReInitializes the USART2 peripheral.
+ * @brief   ReInitializes the USART3 peripheral.
  *
  * @return  none
  */
-void USART2_ReCFG(void)
+void USART3_ReCFG(void)
 {
     GPIO_InitTypeDef       GPIO_InitStructure = {0};
     USART_InitTypeDef      USART_InitStructure = {0};
     USART_ClockInitTypeDef USART_ClockInitStructure = {0};
 
-    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_AFIO, ENABLE);
-    RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART2, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_AFIO, ENABLE);
+    RCC_HB1PeriphClockCmd(RCC_HB1Periph_USART3, ENABLE);
+    RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOC, ENABLE);
 
-    /* USART2  Ck-->A.3   TX-->A.4   RX-->A.5 */
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+    // USART3_CK PC10(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource4, GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // USART3_RX PC9(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource9, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF1);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    // USART3_TX PC8(AF1)
+    GPIO_PinAFConfig(GPIOC, GPIO_PinSource8, GPIO_AF1);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
 
     USART_ClockInitStructure.USART_Clock = USART_Clock_Enable;
     USART_ClockInitStructure.USART_CPOL = USART_CPOL_High;         /* Clock is active High */
     USART_ClockInitStructure.USART_CPHA = USART_CPHA_2Edge;        /* Data is captured on the second edge */
     USART_ClockInitStructure.USART_LastBit = USART_LastBit_Enable; /* The clock pulse of the last data bit is output to the SCLK pin */
-    USART_ClockInit(USART2, &USART_ClockInitStructure);
+    USART_ClockInit(USART3, &USART_ClockInitStructure);
 
     USART_InitStructure.USART_BaudRate = 115200;
     USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -120,9 +126,9 @@ void USART2_ReCFG(void)
     USART_InitStructure.USART_Parity = USART_Parity_No;
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
     USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
-    USART_Init(USART2, &USART_InitStructure);
+    USART_Init(USART3, &USART_InitStructure);
 
-    USART_Cmd(USART2, ENABLE);
+    USART_Cmd(USART3, ENABLE);
 }
 
 /*********************************************************************
@@ -141,15 +147,23 @@ void SPI1_INIT(void)
     SPI_StructInit(&SPI_InitStructure);
     SPI_I2S_DeInit(SPI1);
 
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF4);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7; /* SPI1 MISO-->PA.7 */
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    // SPI1_SCK PA5(AF4)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF4);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource13, GPIO_AF4);
+
+    // SPI1_MOSI PA6(AF4)
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF4);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_7; /* SPI1 SCK-->PA.13 MOSI-->PA.7 */
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    // SPI1_MISO PA7(AF4)
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF4);
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
@@ -181,13 +195,13 @@ int main(void)
     printf("SystemCoreClk:%d\r\n", SystemCoreClock);
     printf( "ChipID:%08x\r\n", DBGMCU_GetCHIPID() );
     printf("USART SynchromousMode TEST\r\n");
-    USART2_ReCFG(); /* USART2 ReInitializes */
+    USART3_ReCFG(); /* USART3 ReInitializes */
     SPI1_INIT();
 
-    while(TxCnt1 < TxSize1) /* USART2--->SPI1 */
+    while(TxCnt1 < TxSize1) /* USART3--->SPI1 */
     {
-        USART_SendData(USART2, TxBuffer1[TxCnt1++]);
-        while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET) /* waiting for sending finish */
+        USART_SendData(USART3, TxBuffer1[TxCnt1++]);
+        while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET) /* waiting for sending finish */
         {
         }
         while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET)
@@ -195,21 +209,21 @@ int main(void)
         }
         RxBuffer2[RxCnt2++] = SPI_I2S_ReceiveData(SPI1);
     }
-    USART_ReceiveData(USART2); /* Clear the USART2 Data Register */
-    while(TxCnt2 < TxSize2)    /* SPI1--->USART2 */
+    USART_ReceiveData(USART3); /* Clear the USART3 Data Register */
+    while(TxCnt2 < TxSize2)    /* SPI1--->USART3 */
     {
         while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET) /* waiting for sending finish */
         {
         }
         SPI_I2S_SendData(SPI1, TxBuffer2[TxCnt2++]);
-        USART_SendData(USART2, Tempdata); /* Send Tempdata for SCK */
-        while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET)
+        USART_SendData(USART3, Tempdata); /* Send Tempdata for SCK */
+        while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET)
         {
         }
-        while(USART_GetFlagStatus(USART2, USART_FLAG_RXNE) == RESET)
+        while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET)
         {
         }
-        RxBuffer1[RxCnt1++] = USART_ReceiveData(USART2);
+        RxBuffer1[RxCnt1++] = USART_ReceiveData(USART3);
     }
 
     TransferStatus1 = Buffercmp(TxBuffer1, RxBuffer2, TxSize1);

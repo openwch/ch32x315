@@ -2,7 +2,7 @@
 * File Name          : ch32X3x5_usbss_device.c
 * Author             : WCH
 * Version            : V1.0.1
-* Date               : 2025/10/23
+* Date               : 2026/08/18
 * Description        : This file provides all the USBSS firmware functions.
 *********************************************************************************
 * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -42,6 +42,7 @@ void USBSS_RCC_Init(FunctionalState sta)
         RCC_PIPECmd( DISABLE );
     }
 }
+
 /*********************************************************************
  * @fn      USBSS_Device_Init
  *
@@ -64,14 +65,25 @@ void USBSS_Device_Init( FunctionalState sta )
         USBSSD->LINK_CFG |= LINK_RX_TERM_EN;                                     
         USBSSD->LINK_INT_CTRL =  LINK_IE_TX_LMP | LINK_IE_RX_LMP | LINK_IE_RX_LMP_TOUT | LINK_IE_STATE_CHG
                                     | LINK_IE_WARM_RST | LINK_IE_TERM_PRES;
-        USBSSD->LINK_CTRL = LINK_P2_MODE;
+        USBSSD->LINK_CTRL = LINK_P2_MODE | LINK_U3_WKUP_EN;
         USBSSD->LINK_U1_WKUP_TMR = 120;
         USBSSD->LINK_U1_WKUP_FILTER = 50;
         USBSSD->LINK_U2_WKUP_FILTER = 0;
         USBSSD->LINK_U3_WKUP_FILTER = 0;
+        USBSSD->LINK_U1_EXIT_CFG |= ( 1 << 9 );
+
         USBSSD->USB_CONTROL |= USBSS_FORCE_RST;
         USBSSD->USB_STATUS = USBSS_UIF_TRANSFER;
         USBSSD->USB_CONTROL = USBSS_UIE_TRANSFER | USBSS_UDIE_SETUP | USBSS_UDIE_STATUS | USBSS_DMA_EN | USBSS_SETUP_FLOW;
+
+#if ( DEF_FUN_IF_TEST_EN == 0x01 )    
+        USBSSD->LINK_CFG |= LINK_U1_ALLOW;
+        USBSSD->LINK_CFG |= LINK_U2_ALLOW;
+        USBSS_Dev_Info.u1_enable = ENABLE;
+        USBSS_Dev_Info.u2_enable = ENABLE;
+        USBSSD->LINK_CFG |= LINK_COMPLIANCE_EN;
+#endif
+
         USBSS_CFG_MOD( );
         USBSS_Device_Endp_Init ( );
         NVIC_EnableIRQ( USBSS_IRQn );
@@ -184,7 +196,7 @@ void USBSS_Reset_Init( FunctionalState sta )
 /*********************************************************************
  * @fn      USB_Timer_Init
  *
- * @brief   Initializes TIM12 output compare.
+ * @brief   Initializes TIM4 output compare.
  *
  * @param   none.
  *
@@ -425,7 +437,7 @@ void USBSS_LINK_Handle( USBSSD_TypeDef *USBSSHx )
         }
         else                                                            // UPSTREAM
         {
-            if(( link_lpm_r_data0 & LMP_SUBTYPE_MASK ) == LMP_PORT_CFG )           // device RX PORT_CFG, return PORT_CFG_RES
+            if(( link_lpm_r_data0 & LMP_SUBTYPE_MASK ) == LMP_PORT_CFG  && ( USBSSHx->LINK_LMP_PORT_CAP & LINK_LMP_RX_CAP_VLD ))           // device RX PORT_CFG, return PORT_CFG_RES
             {
                 USBSSHx->LINK_LMP_TX_DATA0 = LMP_LINK_SPEED | LMP_PORT_CFG_RES | LMP_HP;
                 USBSSHx->LINK_LMP_TX_DATA1 = 0x0;
@@ -514,6 +526,7 @@ uint32_t USBSS_PHY_Cfg( uint8_t port_num, uint8_t addr, uint16_t data )
         return( 0 );
     }
 }
+
 /*********************************************************************
  * @fn      USBSS_ReadPHYData
  *
@@ -538,15 +551,15 @@ uint32_t USBSS_ReadPHYData( uint8_t port_num, uint8_t addr )
     return 0;
 }
 
-  /*********************************************************************
- * @fn      USBSS_CFG_MOD
- *
- * @brief   USB3.0 FUN configuration. 
- *
- * @param   none
- *
- * @return  none
- */
+/*********************************************************************
+* @fn      USBSS_CFG_MOD
+*
+* @brief   USB3.0 FUN configuration. 
+*
+* @param   none
+*
+* @return  none
+*/
 void USBSS_CFG_MOD( void )
 {
     USBSS_PHY_Cfg( 0, 0x0c, 0x285D );                                   
@@ -555,16 +568,16 @@ void USBSS_CFG_MOD( void )
     USBSS_PHY_Cfg( 0, 0x0D, 0xBAAA );                                   
 }
 
- /*********************************************************************
- * @fn      USBSS_PLL_Init
- *
- * @brief   initializes the USB3.0 PLL 
- *
- * @param   sta - ENABLE: Open the USB3.0 PLL 
- *                DISABLE: Turn off the USB3.0 PLL 
- *
- * @return  none
- */
+/*********************************************************************
+* @fn      USBSS_PLL_Init
+*
+* @brief   initializes the USB3.0 PLL 
+*
+* @param   sta - ENABLE: Open the USB3.0 PLL 
+*                DISABLE: Turn off the USB3.0 PLL 
+*
+* @return  none
+*/
 void USBSS_PLL_Init( FunctionalState sta )
 {
     if(sta)

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/019
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -99,11 +99,6 @@ void ADC_Function_Init(void)
  *            ADC_Channel_10 - ADC Channel10 selected.
  *            ADC_Channel_11 - ADC Channel11 selected.
  *            ADC_Channel_12 - ADC Channel12 selected.
- *            ADC_Channel_13 - ADC Channel13 selected.
- *            ADC_Channel_14 - ADC Channel14 selected.
- *            ADC_Channel_15 - ADC Channel15 selected.
- *            ADC_Channel_16 - ADC Channel16 selected.
- *            ADC_Channel_17 - ADC Channel17 selected.
  *
  * @return  none
  */

@@ -62,7 +62,6 @@
 				"post_script": "",
 				"post_script_description": "",
 				"excludeResources": [
-					"${project}/Startup/startup_ch32x3x5_D8.S",
 					"${project}/LiteOS/kal",
 					"${project}/LiteOS/testsuits",
 					"${project}/LiteOS/third_party/cmsis",

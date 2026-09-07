@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : system_ch32x3x5.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/08/17
 * Description        : CH32X3x5 Device Peripheral Access Layer System Source File.
 *                      For HSE = 20Mhz
 *********************************************************************************
@@ -28,6 +28,10 @@
 // #define SYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSI    312500000
 // #define SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI    480000000
 
+/*Only suitable for commercial applications, with a temperature not exceeding 70 ℃ and good heat dissipation*/
+/* // #define SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE    625000000
+// #define SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI    625000000 */
+
 /* Clock Definitions */
 #ifdef SYSCLK_CoreCLK_HCLK_HSE
 uint32_t SystemClock         = HSE_VALUE;              /* System Clock Frequency */
@@ -49,6 +53,10 @@ uint32_t HCLKClock           = SYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSE;
 uint32_t SystemClock         = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE;              /* System Clock Frequency */
 uint32_t SystemCoreClock     = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE;
 uint32_t HCLKClock           = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE >> 1;
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE
+uint32_t SystemClock         = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE;            /* System Clock Frequency */
+uint32_t SystemCoreClock     = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE;
+uint32_t HCLKClock           = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE >> 1;
 #elif defined SYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI
 uint32_t SystemClock         = SYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI;              /* System Clock Frequency */
 uint32_t SystemCoreClock     = SYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI;
@@ -65,6 +73,10 @@ uint32_t HCLKClock           = SYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSI;
 uint32_t SystemClock         = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI;              /* System Clock Frequency */
 uint32_t SystemCoreClock     = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI;
 uint32_t HCLKClock           = SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI >> 1;
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI
+uint32_t SystemClock         = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI;            /* System Clock Frequency */
+uint32_t SystemCoreClock     = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI;
+uint32_t HCLKClock           = SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI >> 1;
 #else
 uint32_t SystemClock         = HSI_VALUE;              /* System Clock Frequency */
 uint32_t SystemCoreClock     = HSI_VALUE;
@@ -87,6 +99,8 @@ static void SetSYSCLK_240M_CoreCLK_240M_HCLK_240M_HSE( void );
 static void SetSYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSE( void );
 #elif defined SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE
 static void SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE( void );
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE
+static void SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE( void );
 #elif defined SYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI
 static void SetSYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI( void );
 #elif defined SYSCLK_240M_CoreCLK_240M_HCLK_240M_HSI
@@ -95,6 +109,8 @@ static void SetSYSCLK_240M_CoreCLK_240M_HCLK_240M_HSI( void );
 static void SetSYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSI( void );
 #elif defined SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI
 static void SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI( void );
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI
+static void SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI( void );
 
 #endif
 
@@ -180,7 +196,7 @@ void SystemCoreClockUpdate (void)
                           SystemClock = 125000000;
                           break;
                       case RCC_PLLHS_SRC_USBSSPLL_357M:    
-                          SystemClock = 375000000;
+                          SystemClock = 357000000;
                           break;
                       case RCC_PLLHS_SRC_USBSSPLL_625M:    
                           SystemClock = 625000000;
@@ -232,6 +248,8 @@ static void SetSysClock(void)
     SetSYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSE();
 #elif defined SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE
     SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE();
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE
+    SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE();
 #elif defined SYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI
     SetSYSCLK_240M_CoreCLK_240M_HCLK_120M_HSI();
 #elif defined SYSCLK_240M_CoreCLK_240M_HCLK_240M_HSI
@@ -240,6 +258,8 @@ static void SetSysClock(void)
     SetSYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSI();
 #elif defined SYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI
     SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI();
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI
+    SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI();
 
 #endif
  
@@ -525,7 +545,7 @@ static void SetSYSCLK_312_5M_CoreCLK_312_5M_HCLK_312_5M_HSE(void)
 /*********************************************************************
  * @fn      SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE
  *
- * @brief   Sets System clock frequency to 48MHz and configure HCLK, PCLK2 and PCLK1 prescalers.
+ * @brief   Sets System clock frequency to 480MHz and configure HCLK, PCLK2 and PCLK1 prescalers.
  *
  * @return  none
  */
@@ -571,6 +591,81 @@ static void SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSE(void)
     FLASH_Temp = FLASH->ACTLR;
     FLASH_Temp &= ~FLASH_ACTLR_SCK_CFG;
     FLASH_Temp |= FLASH_ACTLR_LATENCY_HCLK_DIV4;
+    FLASH->ACTLR = FLASH_Temp;
+
+    /* Select PLL as system clock source */
+    RCC->CTLR &= (uint32_t)(~RCC_PLLGATE);
+    RCC->CFGR0 |= (uint32_t)RCC_SW_PLL;    
+    /* Wait till PLL is used as system clock source */
+    while ((RCC->CFGR0 & (uint32_t)RCC_SWS) != (uint32_t)0x08)
+    {
+    }
+  }
+  else
+  { 
+        /*
+         * If HSE fails to start-up, the application will have wrong clock
+     * configuration. User can add here some code to deal with this error 
+         */
+  } 
+}
+
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE
+/*********************************************************************
+ * @fn      SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE
+ *
+ * @brief   Sets System clock frequency to 625MHz and configure HCLK, PCLK2 and PCLK1 prescalers.
+ *
+ * @return  none
+ */
+static void SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSE(void)
+{
+  __IO uint32_t StartUpCounter = 0, HSEStatus = 0, FLASH_Temp = 0;
+  /* Select LDO_VDDK to 111b */
+  vu32 tmp = 0;
+  tmp = PWR->CTLR;
+  tmp &= ~(0x7 << 8);
+  tmp |= (0x7 << 8);
+  PWR->CTLR = tmp;
+
+  RCC->CTLR |= ((uint32_t)RCC_HSEON);
+  /* Wait till HSE is ready and if Time out is reached exit */
+  do
+  {
+    HSEStatus = RCC->CTLR & RCC_HSERDY;
+    StartUpCounter++;  
+  } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+
+  if ((RCC->CTLR & RCC_HSERDY) != RESET)
+  {
+    HSEStatus = (uint32_t)0x01;
+  }
+  else
+  {
+    HSEStatus = (uint32_t)0x00;
+  }  
+
+  if (HSEStatus == (uint32_t)0x01)
+  {
+    /* CoreClock = SYSCLK */
+    RCC->CFGR0 |= (uint32_t)RCC_HPRE_DIV1;    
+    /* HCLK = CoreClock / 2 */
+    RCC->CFGR0 |= (uint32_t)RCC_FPRE_DIV2;
+
+    RCC->CFGR2 |= (uint32_t)(RCC_USBSSPLLSRCC_HSE | RCC_USBSSPLLREFSEL_20MHz);
+
+    RCC->CTLR |= RCC_USBSSPLLON;
+    /* Wait till USBHSPLL is ready */
+    while((RCC->CTLR & RCC_USBSSPLLRDY) == 0)
+    {
+    }
+
+    RCC->CFGR0 |= (uint32_t)(RCC_PLLSRC_HS|RCC_PLLHS_SRC_USBSSPLL_625M);
+
+    /* Select FLASH clock frequency*/
+    FLASH_Temp = FLASH->ACTLR;
+    FLASH_Temp &= ~FLASH_ACTLR_SCK_CFG;
+    FLASH_Temp |= FLASH_ACTLR_LATENCY_HCLK_DIV8;
     FLASH->ACTLR = FLASH_Temp;
 
     /* Select PLL as system clock source */
@@ -751,6 +846,54 @@ static void SetSYSCLK_480M_CoreCLK_480M_HCLK_240M_HSI(void)
   FLASH_Temp = FLASH->ACTLR;
   FLASH_Temp &= ~FLASH_ACTLR_SCK_CFG;
   FLASH_Temp |= FLASH_ACTLR_LATENCY_HCLK_DIV4;
+  FLASH->ACTLR = FLASH_Temp;
+
+  /* Select PLL as system clock source */
+  RCC->CTLR &= (uint32_t)(~RCC_PLLGATE);
+  RCC->CFGR0 |= (uint32_t)RCC_SW_PLL;    
+  /* Wait till PLL is used as system clock source */
+  while ((RCC->CFGR0 & (uint32_t)RCC_SWS) != (uint32_t)0x08)
+  {
+  }
+}
+
+#elif defined SYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI
+/*********************************************************************
+ * @fn      SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI
+ *
+ * @brief   Sets System clock frequency to 625MHz and configure HCLK, PCLK2 and PCLK1 prescalers.
+ *
+ * @return  none
+ */
+static void SetSYSCLK_625M_CoreCLK_625M_HCLK_312_5M_HSI(void)
+{
+  __IO uint32_t FLASH_Temp = 0;
+  /* Select LDO_VDDK to 111b */
+  vu32 tmp = 0;
+  tmp = PWR->CTLR;
+  tmp &= ~(0x7 << 8);
+  tmp |= (0x7 << 8);
+  PWR->CTLR = tmp;
+
+  /* CoreClock = SYSCLK */
+  RCC->CFGR0 |= (uint32_t)RCC_HPRE_DIV1;    
+  /* HCLK = CoreClock / 2 */
+  RCC->CFGR0 |= (uint32_t)RCC_FPRE_DIV2;
+
+  RCC->CFGR2 |= (uint32_t)(RCC_USBSSPLLSRCC_HSI | RCC_USBSSPLLREFSEL_20MHz);
+
+  RCC->CTLR |= RCC_USBSSPLLON;
+  /* Wait till USBHSPLL is ready */
+  while((RCC->CTLR & RCC_USBSSPLLRDY) == 0)
+  {
+  }
+
+  RCC->CFGR0 |= (uint32_t)(RCC_PLLSRC_HS|RCC_PLLHS_SRC_USBSSPLL_625M);
+
+  /* Select FLASH clock frequency*/
+  FLASH_Temp = FLASH->ACTLR;
+  FLASH_Temp &= ~FLASH_ACTLR_SCK_CFG;
+  FLASH_Temp |= FLASH_ACTLR_LATENCY_HCLK_DIV8;
   FLASH->ACTLR = FLASH_Temp;
 
   /* Select PLL as system clock source */

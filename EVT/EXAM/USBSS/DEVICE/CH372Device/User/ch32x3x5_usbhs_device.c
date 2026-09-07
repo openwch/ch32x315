@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32x3x5_usbhs_device.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2025/05/26
+ * Version            : V1.0.1
+ * Date               : 2026/08/18
  * Description        : This file provides all the USBHS firmware functions.
  *********************************************************************************
  * Copyright (c) 2025 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -184,6 +184,7 @@ void USBHS_RCC_Init(FunctionalState sta)
         RCC_UTMICmd(DISABLE);
     }
 }
+
 /*********************************************************************
  * @fn      USBHS_Device_Init
  *

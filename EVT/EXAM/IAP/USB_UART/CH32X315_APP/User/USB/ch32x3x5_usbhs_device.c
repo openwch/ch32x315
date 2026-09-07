@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : ch32v4x7_usbhs_device.c
+* File Name          : ch32x3x5_usbhs_device.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2025/12/01
+* Version            : V1.0.1
+* Date               : 2026/08/27
 * Description        : USBHS
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.

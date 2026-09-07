@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : usb_host_iap.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2026/01/19
+ * Version            : V1.0.1
+ * Date               : 2026/08/19
  * Description        : IAP
 *********************************************************************************
 * Copyright (c) 2026 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -157,8 +157,7 @@ uint8_t mFLASH_ProgramPage_Fast(uint32_t addr, uint32_t* buffer)
 
     adr &= 0xFFFFFF80;
 
-    FLASH_ProgramPage_Fast(adr, buffer);
-    FLASH_ROM_WRITE(addr,buffer,256);
+    FLASH_ROM_WRITE(adr,buffer,256);
     return 0;
 }
 
