@@ -11,9 +11,9 @@
 *******************************************************************************/
 
 /*
- * IAP routine: this routine support USB and UART mode,
+ * APP routine: this routine support USB and UART mode,
  * and you can choose the command method or the IO method to jump to the APP .
- * Key  parameters: CalAddr - address in flash (same in APP), note that this address needs to be unused.
+ * Key  parameters: CalAddr - address in flash (same in IAP), note that this address needs to be unused.
  *                  CheckNum - The value of 'CalAddr' that needs to be modified.
  * Tips :the routine need IAP software version 1.60.
  *       For this chip has 2 USBHS, you can choose anyone you what by changing the definition "USBHS_CONTROLLER".

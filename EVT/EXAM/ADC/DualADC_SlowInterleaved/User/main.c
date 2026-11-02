@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -25,8 +25,8 @@
 /* Global define */
 
 /* Global Variable */
-u16 Adc_Val[2];
-u32 temp;
+vu16 Adc_Val[2];
+vu32 temp;
 
 void ADC1_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
 
@@ -130,7 +130,7 @@ void ADC1_IRQHandler()
         temp=ADC1->RDATAR;
         Adc_Val[0]=temp&0xffff;
         Adc_Val[1]=(temp>>16)&0xffff;
-#if 1
+#if 0
         printf("\r\nADC1 ch1=%d\r\n",Adc_Val[0]);
         printf("\r\nADC2 ch1=%d\r\n",Adc_Val[1]);
 #endif

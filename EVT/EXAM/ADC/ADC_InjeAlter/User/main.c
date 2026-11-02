@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -120,7 +120,7 @@ void ADC_Function_Init(void)
 	ADC_SampleTimeModeConfig(ADC3, ADC_Channel_2, ADC_Sample_Time_Mode0);
 	ADC_InjectedChannelConfig(ADC3, ADC_Channel_2, 1);
 	ADC_SetMode0SampleTimeConfig(ADC3, ADC_Channel_2,ADC_SampleTime_CyclesMode7);
-	ADC_ExternalTrigInjectedConvConfig(ADC1,ADC_ExternalTrigInjecConv_None); 	
+	ADC_ExternalTrigInjectedConvConfig(ADC3,ADC_ExternalTrigInjecConv_None); 	
 	ADC_ExternalTrigInjectedConvCmd(ADC3, ENABLE);
     NVIC_EnableIRQ(ADC3_IRQn);
     ADC_ITConfig(ADC3, ADC_IT_JEOC, ENABLE);
@@ -207,7 +207,7 @@ void ADC1_IRQHandler()
 	{
 		ADC_val1 =  ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);
 
-#if 1
+#if 0
 
 		printf( "ADC1 %04d \r\n", ADC_val1);
 #endif
@@ -233,7 +233,7 @@ void ADC2_IRQHandler()
 	if(ADC_GetITStatus( ADC2, ADC_IT_JEOC))
 	{
 		ADC_val2 = ADC_GetInjectedConversionValue(ADC2, ADC_InjectedChannel_1);
-#if 1
+#if 0
 
 		printf( "ADC2 %04d\r\n", ADC_val2);
 #endif
@@ -260,7 +260,7 @@ void ADC3_IRQHandler()
 	{
 		ADC_val3 = ADC_GetInjectedConversionValue(ADC3, ADC_InjectedChannel_1);
 
-#if 1
+#if 0
 
 		printf( "ADC3 %04d \r\n", ADC_val3);
 #endif

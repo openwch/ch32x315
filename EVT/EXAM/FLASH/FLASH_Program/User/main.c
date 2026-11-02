@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/08/18
+* Version            : V1.0.3
+* Date               : 2026/10/15
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -14,7 +14,7 @@
  * @Note
  * FLASH erase/read/write, and fast programming:
  * Includes Standard Erase and Program, Fast Erase and Program.
- * Note ：It is recommended to enable continuous read when programming/erasing/read FLASH (FLASH->ACTLR bit11).
+ * Note : It is recommended to enable continuous read when programming/erasing/read FLASH (FLASH->ACTLR bit11).
  *        It is recommended to use the erase function - FLASH_ROM_ERASE.
  *        It is recommended to use the program function - FLASH_ROM_WRITE. 
 */
@@ -188,14 +188,16 @@ int main(void)
     SystemCoreClockUpdate();
     Delay_Init();
     USART_Printf_Init(921600);
-    printf("SystemClk:%d\r\n", SystemClock);
+    printf("SystemClk:%u\r\n", SystemClock);
     printf("SystemCoreClk:%d\r\n", SystemCoreClock);
     printf( "ChipID:%08x\r\n", DBGMCU_GetCHIPID() );
     printf("Flash Program Test\r\n");
     printf("FLASH->CTLR - %08x\r\n",FLASH->CTLR);
 
+    __disable_irq(); 
     Flash_Test();
     Flash_Test_Fast();
+    __enable_irq();
 
     while(1)
         ;

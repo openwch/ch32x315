@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_exti.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/18
 * Description        : This file provides all the EXTI firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -28,7 +28,7 @@ void EXTI_DeInit(void)
     EXTI->EVENR = 0x00000000;
     EXTI->RTENR = 0x00000000;
     EXTI->FTENR = 0x00000000;
-    EXTI->INTFR = 0x000FFFFF;
+    EXTI->INTFR = 0x003FFFFF;
 }
 
 /*********************************************************************

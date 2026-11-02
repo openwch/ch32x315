@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2026/08/27
+ * Version            : V1.0.0
+ * Date               : 2026/01/19
  * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -109,7 +109,11 @@ uint8_t IAP_Flash_Erase( uint32_t address, uint32_t length )
     /* Verify Address, No flash operation if the address is out of range */
     if((address >= DEF_VERIFY_CODE_START_ADDR) && ((address + length - 1) <= DEF_VERIFY_CODE_END_ADDR))
     {
-        FLASH_ROM_ERASE(DEF_VERIFY_CODE_START_ADDR,DEF_FLASH_SECTOR_SIZE);
+        FLASH_ROM_ERASE(address,length);
+    }
+    else
+    {
+        return 0xC0;
     }
 
     return 0;
@@ -149,7 +153,7 @@ uint8_t  IAP_VerifyCode_Erase( void )
  */
 void GPIO_Cfg_init( void )
 {
-    GPIO_InitTypeDef GPIO_InitStructure = {0};
+    GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE);
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;

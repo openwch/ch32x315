@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : usbd_composite_km.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2026/08/27
+ * Version            : V1.0.0
+ * Date               : 2026/01/19
  * Description        : USB keyboard and mouse processing.
 *********************************************************************************
 * Copyright (c) 2026 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -53,7 +53,7 @@ void USART4_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
  */
 void TIM3_Init( uint16_t arr, uint16_t psc )
 {
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure = {0};
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 
     /* Enable Timer3 Clock */
     RCC_HB1PeriphClockCmd( RCC_HB1Periph_TIM3, ENABLE );
@@ -112,8 +112,8 @@ void TIM3_IRQHandler( void )
  */
 void USART4_Init( uint32_t baudrate )
 {
-    GPIO_InitTypeDef GPIO_InitStructure = {0};
-    USART_InitTypeDef USART_InitStructure = {0};
+    GPIO_InitTypeDef GPIO_InitStructure;
+    USART_InitTypeDef USART_InitStructure;
 
     RCC_HB2PeriphClockCmd( RCC_HB2Periph_AFIO | RCC_HB2Periph_GPIOB, ENABLE );
     RCC_HB1PeriphClockCmd( RCC_HB1Periph_USART4, ENABLE );
@@ -354,7 +354,7 @@ void KB_Scan_Handle( void )
                 /* Determine that there is at least one key is pressed or released */
                 if( ( KB_Scan_Result & ( 1 << i ) ) != ( KB_Scan_Last_Result & ( 1 << i ) ) )
                 {
-                    if( ( KB_Scan_Result & ( 1 << i ) ) )           // Key press
+                    if( ( KB_Scan_Result & ( 1 << i ) ) )           // Key release
                     {
                         if( i == 11 )
                         {
@@ -403,12 +403,15 @@ void KB_Scan_Handle( void )
                         }
                         else
                         {
-                            memcpy( &KB_Data_Pack[ j ], &KB_Data_Pack[ j + 1 ], ( 8 - j - 1 ) );
+                            memmove( &KB_Data_Pack[ j ], &KB_Data_Pack[ j + 1 ], ( 8 - j - 1 ) );
                             KB_Data_Pack[ 7 ] = 0;
                         }
-                        key_cnt--;
+                        if( key_cnt )
+                        {
+                            key_cnt--;
+                        }
                     }
-                    else                                            // Key release
+                    else                                            // Key press
                     {
                         if( i == 11 )
                         {
@@ -533,7 +536,7 @@ void MS_Sleep_Wakeup_Cfg( void )
 {
     EXTI_InitTypeDef EXTI_InitStructure = { 0 };
 
-    /* Enable GPIOC clock */
+    /* Enable AFIO clock */
     RCC_HB2PeriphClockCmd( RCC_HB2Periph_AFIO, ENABLE );
 
     GPIO_EXTILineConfig( GPIO_PortSourceGPIOA, GPIO_PinSource4 );
@@ -689,7 +692,7 @@ void MCU_Sleep_Wakeup_Operate( void )
     printf( "Sleep\r\n" );
     __disable_irq( );
     USBHSD->CONTROL &= ~USBHS_UH_PHY_SUSPENDM;
-    EXTI_ClearFlag( EXTI_Line12 | EXTI_Line13 | EXTI_Line14 | EXTI_Line15 );
+    EXTI_ClearFlag( EXTI_Line11 | EXTI_Line12 | EXTI_Line13 | EXTI_Line14 );
     EXTI_ClearFlag( EXTI_Line4 | EXTI_Line5 | EXTI_Line6 | EXTI_Line7 );
 
     USBHSD->CONTROL |= USBHS_UD_PHY_SUSPENDM;
@@ -698,9 +701,9 @@ void MCU_Sleep_Wakeup_Operate( void )
     SystemInit();
     SystemCoreClockUpdate();
 
-    if( EXTI_GetFlagStatus( EXTI_Line12 | EXTI_Line13 | EXTI_Line14 | EXTI_Line15 ) != RESET  )
+    if( EXTI_GetFlagStatus( EXTI_Line11 | EXTI_Line12 | EXTI_Line13 | EXTI_Line14 ) != RESET  )
     {
-        EXTI_ClearFlag( EXTI_Line12 | EXTI_Line13 | EXTI_Line14 | EXTI_Line15 );
+        EXTI_ClearFlag( EXTI_Line11 | EXTI_Line12 | EXTI_Line13 | EXTI_Line14 );
         USBHS_Send_Resume( );
     }
     else if( EXTI_GetFlagStatus( EXTI_Line4 | EXTI_Line5 | EXTI_Line6 | EXTI_Line7 ) != RESET )

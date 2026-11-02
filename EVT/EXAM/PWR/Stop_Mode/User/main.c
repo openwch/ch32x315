@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/02/08
+* Version            : V1.0.1
+* Date               : 2026/10/14
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -13,7 +13,7 @@
  *@Note
  * low power, stop mode routine:
  * EXTI_Line0(PB0)
- * This routine demonstrates WFI\WFE enters stop mode, PB0 pin input low level triggers 
+ * This routine demonstrates WFI\WFE enters stop mode, PB0 pin input high level triggers 
  * EXTI_Line0 to exit stop mode,Program execution continues after wake-up.
  * For the small package model of the chip, there are some pins that have not been 
  * led out compared to the largest package, or some pins that have been packaged but 
@@ -32,11 +32,11 @@
 #define  STOP_ON   0
 #define  STOP_LP   1
 
-// #define  Enter_MODE  Enter_WFI
-#define  Enter_MODE  Enter_WFE
+#define  Enter_MODE  Enter_WFI
+// #define  Enter_MODE  Enter_WFE
 
-// #define  STOP_MODE  STOP_ON
-#define  STOP_MODE  STOP_LP
+#define  STOP_MODE  STOP_ON
+// #define  STOP_MODE  STOP_LP
 
 /* Global Variable */
 
@@ -114,7 +114,7 @@ int main(void)
     Delay_Init();
     Delay_Ms(1000);
     USART_Printf_Init(115200);	
-    printf("SystemClk:%d\r\n", SystemCoreClock);
+    printf("SystemClk:%u\r\n", SystemCoreClock);
     printf( "ChipID:%08x\r\n", DBGMCU_GetCHIPID() );
     printf("\r\nstop mode...\r\n");
     All_GPIO_IPD_Init();
@@ -146,9 +146,10 @@ int main(void)
     #elif(STOP_MODE == STOP_LP)
     PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFE);
     #endif
+    
+#endif
     SystemInit();
     USART_Printf_Init(115200);
-#endif
     printf("\r\n##########\r\n");
     while(1)
     {
@@ -169,10 +170,7 @@ void EXTI7_0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void EXTI7_0_IRQHandler(void)
 {
   if(EXTI_GetITStatus(EXTI_Line0)!=RESET)
-  {
-    SystemInit();
-    USART_Printf_Init(115200);	
-    printf("EXTI0 Wake up\r\n");
+  {	
     EXTI_ClearITPendingBit(EXTI_Line0);     /* Clear Flag */
   }
 }

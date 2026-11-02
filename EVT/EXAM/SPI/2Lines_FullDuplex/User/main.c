@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -139,7 +139,7 @@ int main(void)
 {
     u8 i = 0;
     u8 j = 0;
-    u8 value;
+    int value;
 
     SystemCoreClockUpdate();
     Delay_Init();
@@ -189,7 +189,7 @@ int main(void)
             printf("tx %04x rx %04x\n", TxData[t], RxData[t]);
         }
 
-        value = memcmp(TxData, RxData, Size);
+        value = memcmp(TxData, RxData, Size * sizeof(u16));
 
         if (value == 0)
         {

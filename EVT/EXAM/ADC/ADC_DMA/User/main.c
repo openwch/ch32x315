@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/08/20
+* Version            : V1.0.2
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -44,7 +44,7 @@ void ADC_Function_Init(void)
 	ADC_InitTypeDef ADC_InitStructure={0};
 	GPIO_InitTypeDef GPIO_InitStructure={0};
 
-	RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA, ENABLE );
+	RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA|RCC_HB2Periph_GPIOD, ENABLE );
 	#if  (ADC_MODE == ADC1_MODE)
 	RCC_HB2PeriphClockCmd(RCC_HB2Periph_ADC1, ENABLE );
 	#else

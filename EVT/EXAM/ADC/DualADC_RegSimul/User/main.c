@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -22,10 +22,10 @@
 /* Global define */
 
 /* Global Variable */
-u16 ADC_val1[2];
-u16 ADC_val2[2];
-u32 TxBuf1[1];
-u32 TxBuf2[1];
+vu16 ADC_val1[2];
+vu16 ADC_val2[2];
+vu32 TxBuf1[1];
+vu32 TxBuf2[1];
 volatile u8 DMA1_IT_Flag,DMA2_IT_Flag;
 void DMA1_Channel1_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
 void DMA1_Channel9_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
@@ -175,7 +175,7 @@ void DMA_Tx_Init( DMA_Channel_TypeDef* DMA_CHx, u32 ppadr, u32 memadr, u16 bufsi
 /*********************************************************************
  * @fn      TIM2_PWM_In
  *
- * @brief   TIM2,PWM input mode init,Only CH1 and CH2 channels can be used.
+ * @brief   TIM2,PWM .
  *
  * @param   arr - Auto reload values
  *          psc - Prescaler value
@@ -234,7 +234,7 @@ int main(void)
     NVIC_EnableIRQ(DMA1_Channel9_IRQn);
     NVIC_SetPriority(DMA1_Channel9_IRQn,0x70);
     DMA_ITConfig( DMA1_Channel9, DMA_IT_TC, ENABLE );
-	TIM2_PWM_In( 6000, 48000-1, 3000 );
+	TIM2_PWM_In( 6000-1, 48000-1, 3000 );
 	while(1)
     {
         if(DMA2_IT_Flag==1)

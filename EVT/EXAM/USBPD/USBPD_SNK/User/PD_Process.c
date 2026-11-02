@@ -2,7 +2,7 @@
 * File Name          : PD_process.c
 * Author             : WCH
 * Version            : V1.0.1
-* Date               : 2026/08/14
+* Date               : 2026/10/14
 * Description        : This file provides all the PD firmware functions.
 *********************************************************************************
 * Copyright (c) 2023 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -25,7 +25,7 @@ UINT8 PD_Ack_Buf[ 2 ];                                                          
 __IO UINT8  Tmr_Ms_Cnt_Last;                                                         /* System timer millisecond timing final value */
 __IO UINT8  Tmr_Ms_Dlt;                                                              /* System timer millisecond timing this interval value */
 
-PD_CONTROL PD_Ctl;                                                              /* PD Control Related Structures */
+PD_CONTROL PD_Ctl={0};                                                              /* PD Control Related Structures */
 
 UINT8  Adapter_SrcCap[ 30 ];                                                    /* SrcCap message from the adapter */
 
@@ -99,7 +99,7 @@ void USBPD_IRQHandler(void)
     {
         USBPD->STATUS |= IF_RX_RESET;
         PD_SINK_Init( );
-        printf("IF_RX_RESET\r\n");
+
     }
 }
 

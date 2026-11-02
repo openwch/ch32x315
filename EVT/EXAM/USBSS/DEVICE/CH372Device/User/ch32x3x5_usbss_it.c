@@ -1,5 +1,5 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : ch32X3x5_it.c
+* File Name          : ch32x3x5_usbss_it.c
 * Author             : WCH
 * Version            : V1.0.1
 * Date               : 2026/08/18
@@ -63,9 +63,14 @@ void USBSS_LINK_IRQHandler( void )
  */
 uint8_t USBSS_Endp_Clear_Feature( uint8_t dir_endp )         
 {
-    if(( dir_endp & DEF_UEP_NUM ) > DEF_UEP15 )
+    if(( dir_endp & DEF_UEP_MASK ) > DEF_UEP15 )
     {
         return 0xff;
+    }
+
+    if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP0 )
+    {
+        return 0x00;
     }
     if(( dir_endp & DEF_UEP_IN ))
     {
@@ -76,7 +81,23 @@ uint8_t USBSS_Endp_Clear_Feature( uint8_t dir_endp )
     {
         USBSS_EP_RX_TypeDef* endp = (USBSS_EP_RX_TypeDef*)( &USBSSD->EP1_RX + ( dir_endp - 1 ) * 2 );
         endp->UEP_RX_CR |= USBSS_EP_RX_CLR | USBSS_EP_RX_CHAIN_CLR;
-        endp->UEP_RX_CHAIN_MAX_NUMP = DEF_ENDP1_OUT_BURST_LEVEL;
+
+        if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP1 )
+        {
+            endp->UEP_RX_DMA = (uint32_t)USBSS_EP1_Rx_Buf;
+            endp->UEP_RX_CHAIN_MAX_NUMP = DEF_ENDP1_OUT_BURST_LEVEL;
+        }
+        else if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP2 )
+        {
+            endp->UEP_RX_DMA = (uint32_t)USBSS_EP2_Rx_Buf;
+            endp->UEP_RX_CHAIN_MAX_NUMP = DEF_ENDP2_OUT_BURST_LEVEL;
+        }
+        else if(( dir_endp & DEF_UEP_MASK ) == DEF_UEP3 )
+        {
+            endp->UEP_RX_DMA = (uint32_t)USBSS_EP3_Rx_Buf;
+            endp->UEP_RX_CHAIN_MAX_NUMP = DEF_ENDP3_OUT_BURST_LEVEL;
+        }
+        
     }
     return 0x00;
 }
@@ -245,7 +266,7 @@ void USBSS_IRQHandler( void )
 
                         /* get usb BOS descriptor */
                         case USB_DESCR_TYP_BOS:
-                            /* USB 2.00 DO NOT support BOS descriptor */
+                            /* SuperSpeed BOS descriptor */
                             pUSBSS_Descr = MyBOSDesc_SS;
                             len = DEF_USBSSD_BOS_DESC_LEN;
                             break;
@@ -408,6 +429,10 @@ void USBSS_IRQHandler( void )
                         {
                             /* Set end-points status stall */
                             USBSS_Endp_Set_Feature((uint8_t)(USBSS_SetupReqIndex & 0xFF ));
+                        }
+                        else
+                        {
+                            errflag = 0xFF;
                         }
                     }
 

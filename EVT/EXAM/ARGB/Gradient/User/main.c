@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/08/27
+* Version            : V1.0.2
+* Date               : 2026/10/16
 * Description        : Main program body
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -50,6 +50,10 @@ typedef struct
 /* Global Variable */
 float WS2812_BaseHue = 0.0, WS2812_BaseStep = 1.0, WS2812_BaseValue = 0.069;
 WS2812_RGBData_u WS2812_Data[ARGB_WS2812_NUM];
+
+/* Flag set by the ARGB frame-complete interrupt; the color computation and
+ * DMA reload are done in the main loop to keep the ISR short. */
+volatile uint8_t ARGB_FrameFlag = 0;
 
 /*********************************************************************
  * @fn      hsv2rgb
@@ -241,7 +245,33 @@ int main(void)
     ARGB_Cmd(ENABLE);
 
     while (1) {
+        if (ARGB_FrameFlag)
+        {
+            ARGB_FrameFlag = 0;
 
+            // Increment the base hue for color shifting effect
+            WS2812_BaseHue += 1.0f;
+            if (WS2812_BaseHue > 360.0f)
+                WS2812_BaseHue = 0.0f;
+            // Create HSV color structure
+            WS2812_HSVData_t hsv;
+            // Update each LED's color in the strip
+            for (size_t i = 0; i < ARGB_WS2812_NUM; i++) {
+                // Calculate hue based on position with radial pattern
+                hsv.H          = WS2812_BaseHue + 360.0f / (float)(ARGB_WS2812_NUM) * (float)i;
+                // Set saturation and value
+                hsv.S          = WS2812_BaseStep;
+
+                hsv.V          = WS2812_BaseValue;
+                // Convert HSV to RGB and store in data array
+                WS2812_Data[i] = hsv2rgb(hsv);
+            }
+
+            // Refresh DMA transfer with new data
+            DMA_Cmd(DMA1_Channel11, DISABLE);                             // Disable DMA
+            DMA_SetCurrDataCounter(DMA1_Channel11, sizeof(WS2812_Data));  // Set data size
+            DMA_Cmd(DMA1_Channel11, ENABLE);                              // Enable DMA
+        }
     }
 }
 
@@ -251,27 +281,9 @@ void __attribute__((interrupt("WCH-Interrupt-fast"))) ARGB_IRQHandler(void)
     if (ARGB_GetITStatus(ARGB_IT_FRH) != RESET) {
         // Clear the "FreshDone" interrupt flag
         ARGB_ClearITPendingBit(ARGB_IT_FRH);
-        // Increment the base hue for color shifting effect
-        WS2812_BaseHue += 1.0f;
-        if (WS2812_BaseHue > 360.0f)
-            WS2812_BaseHue = 0.0f;
-        // Create HSV color structure
-        WS2812_HSVData_t hsv;
-        // Update each LED's color in the strip
-        for (size_t i = 0; i < ARGB_WS2812_NUM; i++) {
-            // Calculate hue based on position with radial pattern
-            hsv.H          = WS2812_BaseHue + 360.0f / (float)(ARGB_WS2812_NUM) * (float)i;
-            // Set saturation and value
-            hsv.S          = WS2812_BaseStep;
-
-            hsv.V          = WS2812_BaseValue;
-            // Convert HSV to RGB and store in data array
-            WS2812_Data[i] = hsv2rgb(hsv);
-        }
-
-        // Refresh DMA transfer with new data
-        DMA_Cmd(DMA1_Channel11, DISABLE);                             // Disable DMA
-        DMA_SetCurrDataCounter(DMA1_Channel11, sizeof(WS2812_Data));  // Set data size
-        DMA_Cmd(DMA1_Channel11, ENABLE);                              // Enable DMA
+        /* Only set a flag in the ISR: the 64 HSV->RGB floating point
+         * conversions are too slow for the interrupt context and can
+         * cause frame drops / nesting. They are done in the main loop. */
+        ARGB_FrameFlag = 1;
     }
 }

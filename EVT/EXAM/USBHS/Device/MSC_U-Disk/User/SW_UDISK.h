@@ -9,6 +9,9 @@
 * Attention: This software (modified or not) and binary are used for 
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
+#ifndef __SW_UDISK_H
+#define __SW_UDISK_H
+
 #include "stdio.h"
 #include "stdlib.h"
 
@@ -17,7 +20,7 @@
 #endif 
 
 /******************************************************************************/
-/* BulkOnly Mass Storage Class requst */
+/* BulkOnly Mass Storage Class request */
 #define CMD_UDISK_RESET                 0xFF
 #define CMD_UDISK_GET_MAX_LUN           0xFE
 
@@ -91,8 +94,8 @@ typedef union _BULK_ONLY_CMD
 #define MEDIUM_INTERAL_FLASH           1
 #define MEDIUM_SPI_FLASH               2
 
-#define STORAGE_MEDIUM                 MEDIUM_INTERAL_FLASH
-//#define STORAGE_MEDIUM                 MEDIUM_SPI_FLASH
+// #define STORAGE_MEDIUM                 MEDIUM_INTERAL_FLASH
+#define STORAGE_MEDIUM                 MEDIUM_SPI_FLASH
 
 #if (STORAGE_MEDIUM == MEDIUM_SPI_FLASH)
     #define DEF_CFG_DISK_SEC_SIZE      4096                                                /* Disk sector size */
@@ -150,4 +153,6 @@ extern void UDISK_Down_OnePack( uint8_t *pbuf, uint16_t packlen );
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_i2c.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/18
 * Description        : This file provides all the I2C firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -105,6 +105,11 @@ void I2C_DeInit(I2C_TypeDef *I2Cx)
     {
         RCC_HB1PeriphResetCmd(RCC_HB1Periph_I2C1, ENABLE);
         RCC_HB1PeriphResetCmd(RCC_HB1Periph_I2C1, DISABLE);
+    }
+    else if(I2Cx == I2C2)
+    {
+        RCC_HB1PeriphResetCmd(RCC_HB1Periph_I2C2, ENABLE);
+        RCC_HB1PeriphResetCmd(RCC_HB1Periph_I2C2, DISABLE);
     }
 }
 

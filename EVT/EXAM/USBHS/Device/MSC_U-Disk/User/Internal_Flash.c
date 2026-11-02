@@ -9,7 +9,7 @@
 * Attention: This software (modified or not) and binary are used for 
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
-#include "ch32X3X5.h"
+#include "ch32x3x5.h"
 #include "Internal_Flash.h"
 #include "ch32x3x5_flash.h"
 

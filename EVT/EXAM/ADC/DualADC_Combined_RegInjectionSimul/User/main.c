@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -21,9 +21,9 @@
 
 #include "debug.h"
 /* Global Variable */
-u32 TxBuf[1];
-u16 Adc_Val[2];
-u16 ADC_Val1,ADC_Val2;
+vu32 TxBuf[1];
+vu16 Adc_Val[2];
+vu16 ADC_Val1, ADC_Val2;
 volatile u8 Injected_IT_Flag,DMA_IT_Flag;
 
 void ADC1_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
@@ -59,7 +59,7 @@ void  ADC_Function_Init(void)
     ADC_DeInit(ADC1);
     ADC_DeInit(ADC2);
 
-    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    ADC_InitStructure.ADC_Mode = ADC_Mode_RegInjecSimult;
     ADC_InitStructure.ADC_ScanConvMode = DISABLE;
     ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
     ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;

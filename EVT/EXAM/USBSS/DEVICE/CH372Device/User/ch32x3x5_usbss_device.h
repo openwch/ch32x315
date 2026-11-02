@@ -34,6 +34,7 @@ extern "C" {
 #define DEF_UEP_BUSY                  0x01
 #define DEF_UEP_FREE                  0x00
 #define DEF_UEP_NUM                   16
+#define DEF_UEP_MASK                  0x7F
 #define DEF_UEP0                      0x00
 #define DEF_UEP1                      0x01
 #define DEF_UEP2                      0x02

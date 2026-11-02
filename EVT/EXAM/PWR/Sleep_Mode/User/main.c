@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/01/12
+* Version            : V1.0.1
+* Date               : 2026/10/14
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -13,7 +13,7 @@
  *@Note
  * low power, sleep mode routine:
  * EXTI_Line0(PB0)
- * This routine demonstrates WFI\WFE enters sleep mode, PB0 pin input low level triggers 
+ * This routine demonstrates WFI\WFE enters sleep mode, PB0 pin input high level triggers 
  * EXTI_Line0 to exit sleep mode,Program execution continues after wake-up.
  * For the small package model of the chip, there are some pins that have not been 
  * led out compared to the largest package, or some pins that have been packaged but 
@@ -51,7 +51,7 @@ void EXTI0_INT_INIT(void)
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    /* GPIOA.0 ----> EXTI_Line0 */
+    /* GPIOB.0 ----> EXTI_Line0 */
     GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource0);
     EXTI_InitStructure.EXTI_Line = EXTI_Line0;
     #if(Enter_MODE == Enter_WFI)
@@ -105,7 +105,7 @@ int main(void)
     Delay_Init();
     USART_Printf_Init(115200);	
     Delay_Ms(500);
-    printf("SystemCoreClk:%d\r\n", SystemCoreClock);
+    printf("SystemCoreClk:%u\r\n", SystemCoreClock);
     printf("ChipID:%08x\r\n", DBGMCU_GetCHIPID());
     printf("\r\nsleep mode...\r\n");
     RCC_HB1PeriphClockCmd(RCC_HB1Periph_PWR, ENABLE);
@@ -139,8 +139,6 @@ void EXTI7_0_IRQHandler(void)
 {
   if(EXTI_GetITStatus(EXTI_Line0)!=RESET)
   {
-    USART_Printf_Init(115200);
-    printf("EXTI0 Wake up\r\n");
     EXTI_ClearITPendingBit(EXTI_Line0);     /* Clear Flag */
   }
 }

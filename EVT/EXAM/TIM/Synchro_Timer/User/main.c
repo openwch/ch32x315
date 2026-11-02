@@ -118,7 +118,7 @@ int main(void)
 	/* Timer synchronization Mode Selection */
     TIM_TimSynchroMode1_Init();
    	//TIM_TimSynchroMode2_Init();
-    //	TIM_TimSynchroMode3_Init();
+    //TIM_TimSynchroMode3_Init();
       
 	while(1)
 	{

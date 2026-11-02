@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : main.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/03/11
+ * Version            : V1.0.2
+ * Date               : 2026/10/14
  * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -34,7 +34,7 @@ void USBPDWakeUp_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 #endif
 volatile UINT8  Tim_Ms_Cnt = 0x00;
-
+u8 falg_Wakeup=0;
 /*********************************************************************
  * @fn      TIM1_Init
  *
@@ -133,6 +133,11 @@ int main(void)
             PD_Det_Proc( );
         }
         PD_Main_Proc( );
+        if(falg_Wakeup==1)
+        {
+            printf("WakeUp\r\n");
+            falg_Wakeup=0;
+        }
     }
 }
 
@@ -165,14 +170,14 @@ void EXTI7_0_IRQHandler(void)
   if(EXTI_GetITStatus(EXTI_Line4)!=RESET)
   {
       SystemInit();
-      printf(" PD4 GPIO Wake_up\r\n");
+      falg_Wakeup=1;
       EXTI_ClearITPendingBit(EXTI_Line4);     /* Clear Flag */
       NVIC_DisableIRQ(EXTI7_0_IRQn);
   }
   if(EXTI_GetITStatus(EXTI_Line5)!=RESET)
   {
       SystemInit();
-      printf(" PD5 GPIO Wake_up\r\n");
+      falg_Wakeup=1;
       EXTI_ClearITPendingBit(EXTI_Line5);     /* Clear Flag */
       NVIC_DisableIRQ(EXTI7_0_IRQn);
     }
@@ -192,7 +197,7 @@ void USBPDWakeUp_IRQHandler(void)
   {
 
       SystemInit();
-      printf("USBPD Wake Up!\r\n");
+      falg_Wakeup=1;
       EXTI_ClearITPendingBit(EXTI_Line18);     /* Clear Flag */
       NVIC_DisableIRQ(USBPDWakeUP_IRQn);
       USBPD->CONFIG&=~IE_PD_IO;

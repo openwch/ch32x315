@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/08/019
+* Version            : V1.0.2
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -163,7 +163,7 @@ void ADC1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void ADC1_IRQHandler(void)
 {
 	if(ADC_GetITStatus( ADC1, ADC_IT_AWD)){
-#if 1
+#if 0
 		printf( "Enter AnalogWatchdog Interrupt\r\n" );
 #endif
 	}

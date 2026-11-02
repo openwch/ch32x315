@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -23,9 +23,9 @@
 /* Global define */
 
 /* Global Variable */
-u16 ADC_val1[2];
+vu16 ADC_val1[2];
 volatile u8 DMA1_IT_Flag;
-u32 TxBuf1[1];
+vu32 TxBuf1[1];
 void DMA1_Channel1_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
 /*********************************************************************
  * @fn      ADC_Function_Init

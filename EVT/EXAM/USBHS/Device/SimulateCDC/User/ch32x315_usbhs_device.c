@@ -239,6 +239,7 @@ void USBHS_IRQHandler(void)
                             case CDC_GET_LINE_CODING:
                                 pUSBHS_Descr = (uint8_t *)&Uart.Com_Cfg[0];
                                 len = 7;
+                                memcpy( USBHS_EP0_Buf, pUSBHS_Descr, len );
                                 break;
 
                             case CDC_SET_LINE_CODING:
@@ -263,10 +264,6 @@ void USBHS_IRQHandler(void)
                         {
                             errflag = 0xFF;
                         }
-                        /* Copy Descriptors to Endp0 DMA buffer */
-                        len = (USBHS_SetupReqLen >= DEF_USBD_UEP0_SIZE) ? DEF_USBD_UEP0_SIZE : USBHS_SetupReqLen;
-                        memcpy(USBHS_EP0_Buf, pUSBHS_Descr, len);
-                        pUSBHS_Descr += len;
                     }
                     else
                     {
@@ -533,6 +530,10 @@ void USBHS_IRQHandler(void)
                                         errflag = 0xFF;
                                         break;
                                     }
+                                }
+                                else
+                                {
+                                    errflag = 0xFF;
                                 }
                             }
                             break;

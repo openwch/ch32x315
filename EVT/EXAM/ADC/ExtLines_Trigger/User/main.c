@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/19
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -25,8 +25,8 @@
 /* Global define */
 
 /* Global Variable */
-u16 Adc_Val[2];
-u32 temp;
+vu16 ADC_val;
+vu32 temp;
 
 void ADC1_2_IRQHandler(void)   __attribute__((interrupt("WCH-Interrupt-fast")));
 
@@ -137,12 +137,12 @@ void ADC1_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
  */
 void ADC1_IRQHandler()
 {
-	u16 ADC_val;
+
 
 	if(ADC_GetITStatus( ADC1, ADC_IT_JEOC))
 	{
 		ADC_val = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);
-#if 1
+#if 0
 		printf("ADC Extline trigger conversion...\r\n");
 		printf( "JADC%04d\r\n", ADC_val);
 #endif

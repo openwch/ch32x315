@@ -1,5 +1,5 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : ch32X3x5_usbss_device.c
+* File Name          : ch32x3x5_usbss_device.c
 * Author             : WCH
 * Version            : V1.0.1
 * Date               : 2026/08/18
@@ -248,9 +248,9 @@ void USB_Timer_Start( FunctionalState sta )
 }
 
 /*********************************************************************
- * @fn      TIM12_IRQHandler
+ * @fn      TIM4_IRQHandler
  *
- * @brief   This function handles TIM12 exception.
+ * @brief   This function handles TIM4 exception.
  *
  * @return  none
  */

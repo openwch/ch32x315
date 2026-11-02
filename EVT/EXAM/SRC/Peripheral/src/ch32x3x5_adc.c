@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5_adc.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/09/02
 * Description        : This file provides all the ADC firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -1437,7 +1437,7 @@ void ADC_ANA_RST_Cmd(ADC_TypeDef *ADCx, FunctionalState NewState)
 /*********************************************************************
  * @fn      ADC_SW_PRE_Cmd
  *
- * @brief   Enables or disables the ADCx SW_PRE.
+ * @brief   Enables or disables the ADCx disable pre-switching .
  *
  * @param   ADCx - where x can be 1 to 4 to select the ADC peripheral.
  *          NewState - ENABLE or DISABLE.

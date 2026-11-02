@@ -1,5 +1,5 @@
 /********************************** (C) COPYRIGHT *******************************
- * File Name          : SPI_FLAH.c
+ * File Name          : SPI_FLASH.c
  * Author             : WCH
  * Version            : V1.0.0
  * Date               : 2026/01/19
@@ -35,6 +35,9 @@ void FLASH_Port_Init( void )
     SPI_InitTypeDef  SPI_InitStructure = {0};
 
     RCC_HB2PeriphClockCmd(RCC_HB2Periph_GPIOA | RCC_HB2Periph_SPI1 | RCC_HB2Periph_AFIO, ENABLE);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF4);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF4);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF4);
 
     /* CS# */
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
@@ -48,14 +51,14 @@ void FLASH_Port_Init( void )
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-
+    
     /* MISO */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     /* MOSI */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_High;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -207,6 +210,7 @@ uint8_t FLASH_ReadStatusReg( void )
 void FLASH_Erase_Sector( uint32_t address )
 {
     uint8_t  temp;
+    uint32_t retry = 0;
     FLASH_WriteEnable( );
     PIN_FLASH_CS_LOW( );
     SPI_FLASH_SendByte( CMD_FLASH_SECTOR_ERASE );
@@ -217,7 +221,7 @@ void FLASH_Erase_Sector( uint32_t address )
     do
     {
         temp = FLASH_ReadStatusReg( );    
-    }while( temp & 0x01 );
+    }while( ( temp & 0x01 ) && ( ++retry < 0x10000 ) );
 }
 
 /*******************************************************************************
@@ -275,6 +279,7 @@ void FLASH_RD_Block_End( void )
 void W25XXX_WR_Page( uint8_t *pbuf, uint32_t address, uint32_t len )
 {
     uint8_t  temp;
+    uint32_t retry = 0;
     FLASH_WriteEnable( );
     PIN_FLASH_CS_LOW( );
     SPI_FLASH_SendByte( CMD_FLASH_BYTE_PROG );
@@ -293,7 +298,7 @@ void W25XXX_WR_Page( uint8_t *pbuf, uint32_t address, uint32_t len )
     do
     {
         temp = FLASH_ReadStatusReg( );    
-    }while( temp & 0x01 );
+    }while( ( temp & 0x01 ) && ( ++retry < 0x10000 ) );
 }
 
 /*******************************************************************************
@@ -435,7 +440,7 @@ void FLASH_IC_Check( void )
             count = 256;
             break;
         default:
-             if( ( Flash_ID != 0xFFFFFFFF ) || ( Flash_ID != 0x00000000 ) )
+             if( ( Flash_ID != 0xFFFFFFFF ) && ( Flash_ID != 0x00000000 ) )
             {
                 count = 16;
             }

@@ -17,7 +17,7 @@
 
 
 #include "debug.h"
-#include "ch32X315_usbhs_device.h"
+#include "ch32x315_usbhs_device.h"
 #include "SPI_FLASH.h"
 #include "SW_UDISK.h"
 #include "Internal_Flash.h"

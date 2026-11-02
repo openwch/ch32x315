@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -21,7 +21,7 @@
 /* Global define */
 
 /* Global Variable */
-u16 ADC_val1,ADC_val2;
+vu16 ADC_val1, ADC_val2;
 
 
 /*********************************************************************
@@ -118,7 +118,6 @@ int main(void)
         Delay_Ms(100);
 
         ADC_SoftwareStartInjectedConvCmd(ADC1, DISABLE);
-        Delay_Ms(100);
 
         while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_JEOC ));
         ADC_val1 = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);

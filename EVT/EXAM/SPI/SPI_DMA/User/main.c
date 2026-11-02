@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/03/01
+* Version            : V1.0.1
+* Date               : 2026/10/16
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -16,7 +16,7 @@
  Master:SPI1_SCK(PA5)\SPI1_MISO(PA7)\SPI1_MOSI(PA6).
  Slave:SPI1_SCK(PA5)\SPI1_MISO(PA7)\SPI1_MOSI(PA6).
  
- This example demonstrates that Master and Slave use DAM full-duplex transmission
+ This example demonstrates that Master and Slave use DMA full-duplex transmission
  and reception at the same time.
  Note: The two boards download the Master and Slave programs respectively, and power
  on at the same time.
@@ -201,7 +201,7 @@ void DMA_Rx_Init(DMA_Channel_TypeDef* DMA_CHx, u32 ppadr, u32 memadr, u16 bufsiz
     DMA_InitStructure.DMA_MemoryInc          = DMA_MemoryInc_Enable;
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
     DMA_InitStructure.DMA_MemoryDataSize     = DMA_MemoryDataSize_HalfWord;
-    DMA_InitStructure.DMA_Mode               = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Mode               = DMA_Mode_Normal;
     DMA_InitStructure.DMA_Priority           = DMA_Priority_High;
     DMA_InitStructure.DMA_M2M                = DMA_M2M_Disable;
     DMA_Init(DMA_CHx, &DMA_InitStructure);
@@ -216,7 +216,7 @@ void DMA_Rx_Init(DMA_Channel_TypeDef* DMA_CHx, u32 ppadr, u32 memadr, u16 bufsiz
 int main(void)
 {
     u8 i = 0, j = 0;
-    u8 value;
+    int value;
 
     SystemCoreClockUpdate();
     Delay_Init();
@@ -253,15 +253,17 @@ int main(void)
 
     while (1)
     {
-        while ((!DMA_GetFlagStatus(DMA1_FLAG_TC2)) && (!DMA_GetFlagStatus(DMA1_FLAG_TC3)))
+        while ((!DMA_GetFlagStatus(DMA1_FLAG_TC2)) || (!DMA_GetFlagStatus(DMA1_FLAG_TC3)))
             ;
+        DMA_ClearFlag(DMA1_FLAG_TC2);
+        DMA_ClearFlag(DMA1_FLAG_TC3);
 
         for (uint32_t t = 0; t < Size; t++)
         {
             printf("tx %04x rx %04x\n", TxData[t], RxData[t]);
         }
 
-        value = memcmp(TxData, RxData, Size);
+        value = memcmp(TxData, RxData, Size * sizeof(u16));
 
         if (value == 0)
         {

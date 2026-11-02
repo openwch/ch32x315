@@ -1,5 +1,5 @@
 
-Nanjing Qinheng Microelectronics Co., Ltd. 2026.08
+Nanjing Qinheng Microelectronics Co., Ltd. 2026.10
 
 https://wch-ic.com
 
@@ -35,8 +35,13 @@ Directory
   |      |      |      |      |-- ADC_ScanOut: ADC scanning output routine  
   |      |      |      |      |-- ADC_InjeAlter: ADC cascaded alternate sampling
   |      |      |      |      |-- ADC_Cascade: ADC cascade mode
+  |      |      |      |      |-- TIM_Trigger:TIM trigger ADC conversion routine
   |      |      |      |-- APPLICATION
   |      |      |      |      |-- SoftUART: I/O port simulation serial port routine
+  |      |      |      |      |-- CherryUSB: CherryUSB repository address and introduction
+  |      |      |      |      |-- EEPROM_Emulation: The routine demonstrates flash simulation of EEPROM
+  |      |      |      |      |-- FATFS: 
+  |      |      |      |      |      |-- FATFS_SPI_FLASH: This example demonstrates SPI operation Winbond W25Qxx SPIFLASH with FATFS
   |      |      |      |-- ARGB
   |      |      |      |      |-- Gradient: ARGB routine
   |      |      |      |      |-- PollingFilling: Poll and interrupt mode drive ARGB
@@ -49,9 +54,9 @@ Directory
   |      |      |      |      |      |-- TencentOS: TencentOS migration routine
   |      |      |      |      |-- INT
   |      |      |      |      |      |-- Interrupt_VTF: VTF IRQ interrupt routine
-  |      |      |      |      |-- SYSTICK_Interrupt：Systick timer routine  
+  |      |      |      |      |-- SYSTICK_Interrupt: Systick timer routine  
   |      |      |      |-- CRC
-  |      |      |      |      |-- CRC_Calculation：CRC routine
+  |      |      |      |      |-- CRC_Calculation: CRC routine
   |      |      |      |-- DMA
   |      |      |      |      |-- DMA_MEM2MEM: memory to memory mode routine
   |      |      |      |      |-- DoubleBuffer_DMA:Double Buffer mode routine
@@ -67,7 +72,7 @@ Directory
   |      |      |      |      |-- I2C_DMA: I2C DMA, master/slave mode transceiver routine
   |      |      |      |      |-- I2C_EEPROM: I2C interface routine to operate EEPROM peripheral 
   |      |      |      |      |-- I2C_PEC: PEC error check, master/slave mode transceiver routine
-  |      |      |      |      |-- I2C_7bit_Interrupt_Mode：Use interrupt to receive and send routine 
+  |      |      |      |      |-- I2C_7bit_Interrupt_Mode: Use interrupt to receive and send routine 
   |      |      |      |-- IAP: IAP upgrade routine, including the Hex to Bin tool and IAP upgrade tool  
   |      |      |      |      |-- USB+UART: USB+UART IAP routine      
   |      |      |      |-- IWDG
@@ -75,25 +80,28 @@ Directory
   |      |      |      |-- PWR
   |      |      |      |      |-- Sleep_Mode: low power, sleep mode routine
   |      |      |      |      |-- Stop_Mode: low power, stop mode routine
-  |      |      |      |      |-- PVD_Wakeup：STOP mode PVD wakeup MCU Routine
-  |      |      |      |      |-- PVD_VoltageJudger：PVD voltage Judger Routine
-  |      |      |      |      |-- VDD12_ExternPower：VDD 1.2V external power supply routine
+  |      |      |      |      |-- PVD_Wakeup: STOP mode PVD wakeup MCU Routine
+  |      |      |      |      |-- PVD_VoltageJudger: PVD voltage Judger Routine
+  |      |      |      |      |-- VDD12_ExternPower: VDD 1.2V external power supply routine
+  |      |      |      |      |-- Stop_Mode_RTC_WakeUp: The example demonstrates the use of the RTC timer to periodically wake up from stop mode
   |      |      |      |-- RCC
   |      |      |      |      |-- Get_CLK:Get system-HCLK-AHB1-AHB2 clock routine  
   |      |      |      |      |-- MCO: MCO pin clock output routine
   |      |      |      |-- RTC
   |      |      |      |      |-- RTC_Calendar:Calendar Routines  
-  |      |      |      |      |-- RTC_Calibration：RTC calibrate Routines  
+  |      |      |      |      |-- RTC_Calibration: RTC calibrate Routines  
   |      |      |      |-- SPI
   |      |      |      |      |-- 1Lines_half-duplex: single wire half duplex mode, master/slave mode, data transceiver
   |      |      |      |      |-- 2Lines_FullDuplex: two-wire full duplex mode, master/slave mode, data transceiver
   |      |      |      |      |-- FullDuplex_HardNSS: Hardware NSS mode, master/slave mode, data transceiver
   |      |      |      |      |-- SPI_DMA: SPI uses DMA, master/slave mode transceiver routine
   |      |      |      |      |-- SPI_FLASH: SPI interface operation flash peripheral routine
+  |      |      |      |      |-- SPI_DMA_EXT: SPI Master and Slave use DMA full-duplex transmission and reception routine
+  |      |      |      |      |-- SPI_SDCARD: SPI SD card FatFs routine
   |      |      |      |-- SDI_Printf
-  |      |      |      |      |-- SDI_Printf：debug interface SDI, virtual serial port. 
+  |      |      |      |      |-- SDI_Printf: debug interface SDI, virtual serial port. 
   |      |      |      |-- SYSTICK 
-  |      |      |      |      |-- SYSTICK_Interrupt：Systick timer routine    
+  |      |      |      |      |-- SYSTICK_Interrupt: Systick timer routine    
   |      |      |      |-- TIM
   |      |      |      |      |-- Clock_Select: clock source selection routine
   |      |      |      |      |-- ComplementaryOutput_DeadTime: complementary output and deadband insertion mode routines
@@ -106,7 +114,7 @@ Directory
   |      |      |      |      |-- TIM_DMA: timer DMA routines
   |      |      |      |      |-- Encode:Timer encoder mode routines
   |      |      |      |      |-- TIM_INT:Timer interput mode routines
-  |      |      |      |      |-- TIM_Continuous：Timer continuous routines
+  |      |      |      |      |-- TIM_Continuous: Timer continuous routines
   |      |      |      |-- USART
   |      |      |      |      |-- USART_DMA: USART DMA, master/slave mode transceiver routine
   |      |      |      |      |-- USART_HalfDuplex: single wire half duplex mode, master/slave mode transceiver routine
@@ -116,7 +124,8 @@ Directory
   |      |      |      |      |-- USART_Polling: polling transceiver mode, master/slave transceiver routine
   |      |      |      |      |-- USART_Printf: USART Print debugging routine
   |      |      |      |      |-- USART_SynchronousMode: synchronous mode, master/slave mode, transceiver routine
-  |      |      |      |      |-- USART_Idle_Recv：USART use DMA receiving indeterminate length data routines
+  |      |      |      |      |-- USART_Idle_Recv: USART use DMA receiving indeterminate length data routines
+  |      |      |      |      |-- USART_DMA_EXT: USART send and receive data through DMA routine
   |      |      |      |-- USB
   |      |      |      |      |-- USBHS 
   |      |      |      |      |      |-- DEVICE
@@ -132,15 +141,15 @@ Directory
   |	     |      |      |      |      |      |      |-- APP: The APP used in conjunction with HOST_SAP has modified the starting position of the program. After compilation, the file needs to be converted to a bin file and renamed as APP.bin
   |      |      |      |      |      |      |      |-- HOST_IAP:  A host U-disk IAP routine organized based on the U-disk read file routine, reads a file named APP.bin from the U-disk, writes it to internal flash, and automatically jumps after verification.
   |      |      |      |      |      |      |-- HOST_KM: Host operation keyboard and mouse, retrieve the endpoint data uploaded by the keyboard and mouse, and print it. Supports level 1 hub under USBFS port
-  |      |      |      |      |      |      |-- MTP_FileSystem：List the process from a USB host to a device that supports MTP and PTP protocols, and read its files
-  |      |      |      |      |      |      |-- Host_Udisk：USB host operation USB drive routine
-  |      |      |      |      |      |      |-- Udisk_Lib：USB file system library files  
+  |      |      |      |      |      |      |-- MTP_FileSystem: List the process from a USB host to a device that supports MTP and PTP protocols, and read its files
+  |      |      |      |      |      |      |-- Host_Udisk: USB host operation USB drive routine
+  |      |      |      |      |      |      |-- Udisk_Lib: USB file system library files  
   |      |      |      |      |-- USBSS
   |      |      |      |      |      |-- DEVICE
-  |      |      |      |      |      |      |-- CH372Device：Simulate custom USB devices (CH372 devices), with endpoint 1 downloading data and uploading it through endpoint 2, endpoint 2 downloading data and uploading it through endpoint 1, and endpoint 3 independently downloading and uploading data.
+  |      |      |      |      |      |      |-- CH372Device: Simulate custom USB devices (CH372 devices), with endpoint 1 downloading data and uploading it through endpoint 2, endpoint 2 downloading data and uploading it through endpoint 1, and endpoint 3 independently downloading and uploading data.
   |      |      |      |-- USBPD
-  |      |      |      |      |-- USBPD_SNK：PD SNK routine
-  |      |      |      |      |-- USBPD_SRC：PD SRC routine   
+  |      |      |      |      |-- USBPD_SNK: PD SNK routine
+  |      |      |      |      |-- USBPD_SRC: PD SRC routine   
   |      |      |      |-- WWDG
   |      |      |      |      |-- WWDG:Window Watchdog Routine
 

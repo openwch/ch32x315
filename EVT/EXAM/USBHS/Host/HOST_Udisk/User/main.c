@@ -29,8 +29,8 @@
 */
 #include "debug.h"
 #include "stdio.h"
-#include "ch32X315_usbhs_host.h"
-#include "Udisk_Operation.h"
+#include "ch32x315_usbhs_host.h"
+#include "UDisk_Operation.h"
 
 
 /* Switches for code demonstration, 1:Enable 0:Disable */

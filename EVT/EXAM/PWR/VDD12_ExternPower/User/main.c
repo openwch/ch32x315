@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
 * File Name          : main.c
 * Author             : WCH
-* Version            : V1.0.0
-* Date               : 2026/01/12
+* Version            : V1.0.1
+* Date               : 2026/10/14
 * Description        : Main program body.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -35,7 +35,7 @@ int main(void)
     Delay_Init();
     USART_Printf_Init(115200);	
     Delay_Ms(500);
-    printf("SystemCoreClk:%d\r\n", SystemCoreClock);
+    printf("SystemCoreClk:%u\r\n", SystemCoreClock);
     printf("ChipID:%08x\r\n", DBGMCU_GetCHIPID());
 
     /*  The current in the VDD12 power domain of the chip is relatively high. 

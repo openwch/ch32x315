@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
 * File Name          : ch32x3x5.h
 * Author             : WCH
-* Version            : V1.0.1
-* Date               : 2026/08/18
+* Version            : V1.0.2
+* Date               : 2026/09/21
 * Description        : CH32X3x5 Device Peripheral Access Layer Header File.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -30,7 +30,7 @@
 
 /* CH32X3x5 Standard Peripheral Library version number */
 #define __CH32X3x5_STDPERIPH_VERSION_MAIN   (0x01) /* [15:8] main version */
-#define __CH32X3x5_STDPERIPH_VERSION_SUB    (0x01) /* [7:0] sub version */
+#define __CH32X3x5_STDPERIPH_VERSION_SUB    (0x02) /* [7:0] sub version */
 #define __CH32X3x5_STDPERIPH_VERSION        ( (__CH32X3x5_STDPERIPH_VERSION_MAIN << 8)\
                                              |(__CH32X3x5_STDPERIPH_VERSION_SUB << 0))
 
